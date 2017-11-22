@@ -124,7 +124,7 @@ struct RandomSourceV2 : Module {
 		enum InputIds {
 		FM_INPUT,
 		SH_INPUT,
-		RESET_INPUT,
+		CLK_INPUT,
 		NUM_INPUTS
 	};
 		
@@ -151,14 +151,22 @@ struct RandomSourceV2 : Module {
 
 void RandomSourceV2::step()	{
 	
+	//LFO
 	oscillator.setPitch(params[FREQ_PARAM].value + params[FM_PARAM].value * inputs[FM_INPUT].value);
 	oscillator.offset = (params[OFFSET_PARAM].value > 0.0);
 	oscillator.step(0.3 / engineGetSampleRate());
-	oscillator.setReset(inputs[RESET_INPUT].value);
 
 	outputs[SQR_OUTPUT].value = 5.0 * oscillator.sqr();
-	float LFOout = outputs[SQR_OUTPUT].value;
-		
+	
+	float LFOout;
+	
+	if (inputs[CLK_INPUT].active) {
+		LFOout = inputs[CLK_INPUT].value;
+	}
+	else {
+		LFOout = outputs[SQR_OUTPUT].value;
+	}
+	
 	//Noise
 	float noise2 = 2.0 * randomNormal();
 	
@@ -203,7 +211,7 @@ RandomSourceV2Widget::RandomSourceV2Widget() {
 		//Inputs
 		addInput(createInput<SilverSixPort>(Vec(10, 239), module, RandomSourceV2::SH_INPUT));
 		addInput(createInput<SilverSixPort>(Vec(10, 285), module, RandomSourceV2::FM_INPUT));
-		addInput(createInput<SilverSixPort>(Vec(10, 330), module, RandomSourceV2::RESET_INPUT));
+		addInput(createInput<SilverSixPort>(Vec(10, 330), module, RandomSourceV2::CLK_INPUT));
 		
 		//Outputs
 		addOutput(createOutput<SilverSixPort>(Vec(85, 285), module, RandomSourceV2::SH_OUTPUT));
