@@ -1,4 +1,4 @@
-#include "MS_Modules.hpp"
+#include "MS-Modules.hpp"
 
 struct Mult : Module 
 {
@@ -41,11 +41,9 @@ struct Mult : Module
 			NUM_OUTPUTS
 			
 		};
-		
-		float lights[2] = {};
-			
+					
 		Mult() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
-		void step();
+		void step() override;
 };
 		
 void Mult::step() {
@@ -99,11 +97,7 @@ void Mult::step() {
 	outputs[OUT_34_OUTPUT].value = IN_3;
 	outputs[OUT_35_OUTPUT].value = IN_3;
 	outputs[OUT_36_OUTPUT].value = IN_3;
-	
-	lights[0] = IN_1 / 5.0;
-    lights[1] = IN_2 / 5.0;
-	lights[2] = IN_3 / 5.0;
-	
+		
 };
 
 MultWidget::MultWidget()
@@ -155,10 +149,5 @@ MultWidget::MultWidget()
 	addOutput(createOutput<SilverSixPort>(Vec(95, 240), module, Mult::OUT_34_OUTPUT));
 	addOutput(createOutput<SilverSixPort>(Vec(95, 280), module, Mult::OUT_35_OUTPUT));
 	addOutput(createOutput<SilverSixPort>(Vec(95, 320), module, Mult::OUT_36_OUTPUT));
-	
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(23, 19), &module->lights[0]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(63, 19), &module->lights[1]));
-	addChild(createValueLight<SmallLight<GreenRedPolarityLight>>(Vec(103, 19), &module->lights[2]));
-	
-	
+		
 };
