@@ -23,7 +23,7 @@ This modules doesnt need additional modules to work.
 
 "Sample" knob is a volume control for the Sample input.
 
-"Tempo" knob controls the speed of the build in LFO.
+"Tempo" knob controls the frequency(speed) of the build in LFO.
 
 "FM" knob for frequency modulation of the LFO.
 
