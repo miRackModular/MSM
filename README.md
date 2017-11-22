@@ -2,7 +2,7 @@
 VCV Rack Modules: 
 
 
-Random Source
+Random Source v1
 
 A good general tutorial on how to use S&H modules:
 https://www.youtube.com/watch?v=m9auf7dpMrU
@@ -11,7 +11,19 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
 
 
 
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source.png)
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v1.png)
+
+
+Random Source v2
+
+"Sample" knob is a volume control for the Sample input.
+"Tempo" knob controls the speed of the build in LFO (Waveform: Square).
+"FM" knob for frequency modulation of the LFO.
+
+Inputs: Sample, FM, Reset
+Outputs: S&H, Square LFO
+
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v2.png)
 
 
 Mult
