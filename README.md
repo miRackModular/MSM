@@ -31,7 +31,7 @@ Inputs: Sample, FM, Reset
 
 Outputs: S&H, Square LFO
 
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v2.png)
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20SourceV2.png)
 
 
 
