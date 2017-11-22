@@ -14,6 +14,9 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v1.png)
 
 
+
+
+
 Random Source v2
 
 "Sample" knob is a volume control for the Sample input.
@@ -23,9 +26,13 @@ Random Source v2
 "FM" knob for frequency modulation of the LFO.
 
 Inputs: Sample, FM, Reset
+
 Outputs: S&H, Square LFO
 
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v2.png)
+
+
+
 
 
 Mult
