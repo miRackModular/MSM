@@ -19,6 +19,8 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
 
 Random Source v2
 
+This modules doesnt need additional modules to work. 
+
 "Sample" knob is a volume control for the Sample input.
 
 "Tempo" knob controls the speed of the build in LFO.
