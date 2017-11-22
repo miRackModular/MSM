@@ -17,7 +17,8 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
 Random Source v2
 
 "Sample" knob is a volume control for the Sample input.
-"Tempo" knob controls the speed of the build in LFO (Waveform: Square).
+"Tempo" knob controls the speed 
+of the build in LFO (Waveform: Square).
 "FM" knob for frequency modulation of the LFO.
 
 Inputs: Sample, FM, Reset
