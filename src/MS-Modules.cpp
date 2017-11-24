@@ -1,4 +1,4 @@
-#include "MS-modules.hpp"
+#include "MS-Modules.hpp"
 
 Plugin *plugin;
 
