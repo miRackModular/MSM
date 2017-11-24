@@ -27,7 +27,7 @@ This modules doesnt need additional modules to work.
 
 "FM" knob for frequency modulation of the LFO.
 
-Inputs: Sample, FM, Reset
+Inputs: Sample, FM, Ext Clock
 
 Outputs: S&H, Square LFO
 
