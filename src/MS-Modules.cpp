@@ -14,5 +14,6 @@ void init(rack::Plugin *p) {
 	p->addModel(createModel<RandomSourceV1Widget>("MS-Modules", "Random SourceV1", "Random Source-1", SAMPLE_AND_HOLD_TAG));
 	p->addModel(createModel<RandomSourceV2Widget>("MS-Modules", "Random SourceV2", "Random Source-2", SAMPLE_AND_HOLD_TAG));
 	p->addModel(createModel<MultWidget>("MS-Modules", "Mult", "Mult", MULTIPLE_TAG));
+	p->addModel(createModel<SwitchedMultWidget>("MS-Modules", "SwitchedMult", "SwitchedMult", MULTIPLE_TAG));
 		
 }

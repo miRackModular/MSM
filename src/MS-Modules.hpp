@@ -45,6 +45,18 @@ struct SilverSixPort : SVGPort {
 	
 };
 
+/////////////////////////
+// Button
+/////////////////////////
+
+struct SwitchVert : SVGSwitch, ToggleSwitch {
+	SwitchVert() {
+		addFrame(SVG::load(assetPlugin(plugin, "res/SwitchVert0.svg")));
+		addFrame(SVG::load(assetPlugin(plugin, "res/SwitchVert1.svg")));
+		addFrame(SVG::load(assetPlugin(plugin,"res/SwitchVert2.svg")));
+	}
+};
+
 ////////////////////
 // module widgets
 ////////////////////
@@ -60,4 +72,8 @@ struct RandomSourceV2Widget : ModuleWidget {
 
 struct MultWidget : ModuleWidget {
 	MultWidget();
+};
+
+struct SwitchedMultWidget : ModuleWidget {
+	SwitchedMultWidget();
 };
