@@ -77,3 +77,7 @@ struct MultWidget : ModuleWidget {
 struct SwitchedMultWidget : ModuleWidget {
 	SwitchedMultWidget();
 };
+
+struct BlankPanelWidget : ModuleWidget {
+	BlankPanelWidget();
+};
