@@ -11,7 +11,7 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
 
 
 
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20Source%20v1.png)
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSource0v1.png)
 
 
 
@@ -31,7 +31,7 @@ Inputs: Sample, FM, Ext Clock
 
 Outputs: S&H, Square LFO
 
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Random%20SourceV2.png)
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSourceV2.png)
 
 
 
