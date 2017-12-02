@@ -49,6 +49,18 @@ Inputs 5-8 will regulary go to Output 5-8
 This Panel will keep your Rack clean.  
   
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/BlankPanel.png)  
+  
 
+#### COMING SOON!
+## Fade
 
+Fade is a fairly simple crossfader module.
+  
+Knob A controls the mix of Inputs 1-2.  
+Knob B controls the mix of Inputs 3-4.  
+knob AB controls the mix between Knob A and B.
+  
+Every Knob can be control via CV inputs (CV A, CV B, CV AB).  
+This module got 3 Outputs: Mix A, Mix B and Mix AB
 
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Fade.png)  
