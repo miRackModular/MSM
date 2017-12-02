@@ -55,4 +55,13 @@ input 1-4 will regulary go to output 1-4
 input 5-8 will regulary go to ouput 5-8
 1or2 switch: This switch lets you choose between 4 outs or 8 outs.
 
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/SwitchedMult.png)
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/SwitchedMult.png)  
+
+BlankPanel
+
+This Panel will keep your Rack clean.
+
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/BlankPanel.png)  
+
+
+
