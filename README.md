@@ -39,7 +39,7 @@ Every input got a mute switch and a 2or4 switch.
   
 Inputs 1-4 will regulary go to Output 1-4  
 Inputs 5-8 will regulary go to Output 5-8  
-2or4 Switch: This switch lets you choose between 4 outs or 8 outs.  
+2or4 Switch: This switch lets you choose between 2 outs or 4 outs.  
   
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/SwitchedMult.png)  
 
