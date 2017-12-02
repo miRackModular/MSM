@@ -1,7 +1,6 @@
-# MS-Modules
-VCV Rack Modules: 
-
-
+## VCV Rack Modules by MSM:  
+  
+  
 ## Random Source v1
 
 A good general tutorial on how to use S&H modules:  
