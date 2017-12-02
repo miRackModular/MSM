@@ -141,7 +141,7 @@ void SwitchedMult::step() {
 	
 	else {
 		if(inputs[IN_1_INPUT].active) {
-		Out_1 = IN_1 + IN_2 + IN_3 + IN_4;
+		Out_1 = IN_1 + IN_2;
 		
 		outputs[OUT_1_OUTPUT].value = Out_1;
 		outputs[OUT_2_OUTPUT].value = Out_1;
@@ -162,7 +162,7 @@ void SwitchedMult::step() {
 	
 	else {
 		if(inputs[IN_2_INPUT].active) {
-		Out_2 = IN_1 + IN_2 + IN_3 + IN_4;
+		Out_2 = IN_1 + IN_2;
 	
 		outputs[OUT_1_OUTPUT].value = Out_2;
 		outputs[OUT_2_OUTPUT].value = Out_2;
@@ -181,7 +181,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_3_INPUT].active) {
-		Out_3 = IN_1 + IN_2 + IN_3 + IN_4;
+		Out_3 = IN_3 + IN_4;
 				
 		outputs[OUT_1_OUTPUT].value = Out_3;
 		outputs[OUT_2_OUTPUT].value = Out_3;
@@ -200,7 +200,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_4_INPUT].active) {
-		Out_4 = IN_1 + IN_2 + IN_3 + IN_4;
+		Out_4 = IN_3 + IN_4;
 		
 		outputs[OUT_1_OUTPUT].value = Out_4;
 		outputs[OUT_2_OUTPUT].value = Out_4;
@@ -219,7 +219,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_5_INPUT].active) {
-		Out_5 = IN_5 + IN_6 + IN_7 + IN_8;
+		Out_5 = IN_5 + IN_6;
 
 		outputs[OUT_5_OUTPUT].value = Out_5;
 		outputs[OUT_6_OUTPUT].value = Out_5;		
@@ -238,7 +238,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_6_INPUT].active) {
-		Out_6 = IN_5 + IN_6 + IN_7 + IN_8;
+		Out_6 = IN_5 + IN_6;
 		
 		outputs[OUT_5_OUTPUT].value = Out_6;
 		outputs[OUT_6_OUTPUT].value = Out_6;		
@@ -257,7 +257,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_7_INPUT].active) {
-		Out_7 = IN_5 + IN_6 + IN_7 + IN_8;
+		Out_7 = IN_7 + IN_8;
 
 		outputs[OUT_5_OUTPUT].value = Out_7;
 		outputs[OUT_6_OUTPUT].value = Out_7;		
@@ -276,7 +276,7 @@ void SwitchedMult::step() {
 	}
 	else {
 		if(inputs[IN_8_INPUT].active) {
-		Out_8 = IN_5 + IN_6 + IN_7 + IN_8;
+		Out_8 = IN_7 + IN_8;
 
 		outputs[OUT_5_OUTPUT].value = Out_8;
 		outputs[OUT_6_OUTPUT].value = Out_8;		
