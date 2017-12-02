@@ -34,8 +34,8 @@ With the +/- switches you can decide whether the two incoming signals are either
 ## SwitchedMult
 
 This multiplier got 8 inputs and 8 outputs.  
-Inputs will be multiplied by each other unless muted or no signal.  
-Every input got a mute switch and a 1or2 switch.  
+Inputs 1-2, 3-4, 5-6, 7-8 will be multiplied by each other unless muted or no signal.  
+Every input got a mute switch and a 2or4 switch.  
   
 Inputs 1-4 will regulary go to Output 1-4  
 Inputs 5-8 will regulary go to Output 5-8  
