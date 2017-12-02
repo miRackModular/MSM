@@ -51,8 +51,8 @@ This Panel will keep your Rack clean.
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/BlankPanel.png)  
   
 
-#### COMING SOON!
-## Fade
+
+## Fade (COMING SOON!)
 
 Fade is a fairly simple crossfader module.
   
