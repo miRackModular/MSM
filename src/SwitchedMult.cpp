@@ -72,7 +72,18 @@ struct SwitchedMult : Module {
 void SwitchedMult::step() {
 
 	
-	float IN_1, IN_2, IN_3, IN_4, IN_5, IN_6, IN_7, IN_8, Out_1, Out_2, Out_3, Out_4, Out_5, Out_6, Out_7, Out_8;
+	float IN_1 = inputs[IN_1_INPUT].value; 
+	float IN_2 = inputs[IN_2_INPUT].value; 
+	float IN_3 = inputs[IN_3_INPUT].value; 
+	float IN_4 = inputs[IN_4_INPUT].value; 
+	float IN_5 = inputs[IN_5_INPUT].value; 
+	float IN_6 = inputs[IN_6_INPUT].value; 
+	float IN_7 = inputs[IN_7_INPUT].value; 
+	float IN_8 = inputs[IN_8_INPUT].value; 
+	
+	
+	float Out_1, Out_2, Out_3, Out_4, Out_5, Out_6, Out_7, Out_8;
+	
 		
 	bool IN_1_Mode = params[IN_1_PARAM].value + inputs[CV_11_INPUT].value > 0.0;
 	bool IN_2_Mode = params[IN_2_PARAM].value + inputs[CV_12_INPUT].value > 0.0;
@@ -96,57 +107,33 @@ void SwitchedMult::step() {
 	if(MUTE_1) {
 		IN_1 = 0.0;
 	}
-	else {
-		IN_1 = inputs[IN_1_INPUT].value;
-	}
 	if(MUTE_2) {
 		IN_2 = 0.0;
-	}
-	else {
-		IN_2 = inputs[IN_2_INPUT].value;
 	}
 	if(MUTE_3) {
 		IN_3 = 0.0;
 	}
-	else {
-		IN_3 = inputs[IN_3_INPUT].value;
-	}
 	if(MUTE_4) {
 		IN_4 = 0.0;
-	}
-	else {
-		IN_4 = inputs[IN_4_INPUT].value;
 	}
 	if(MUTE_5) {
 		IN_5 = 0.0;
 	}
-	else {
-		IN_5 = inputs[IN_5_INPUT].value;
-
-	}
 	if(MUTE_6) {
 		IN_6 = 0.0;
-	}
-	else {
-		IN_6 = inputs[IN_6_INPUT].value;
 	}
 	if(MUTE_7) {
 		IN_7 = 0.0;
 	}
-	else {
-		IN_7 = inputs[IN_7_INPUT].value;
-	}
 	if(MUTE_8) {
 		IN_8 = 0.0;
 	}
-	else {
-		IN_8 = inputs[IN_8_INPUT].value;
-	}
+
 		
 	if(IN_1_Mode) {
 		if(inputs[IN_1_INPUT].active) {
-		Out_1 = IN_1 + IN_2;
-		
+		Out_1 = IN_1 + IN_2;		
+
 		outputs[OUT_1_OUTPUT].value = Out_1;
 		outputs[OUT_2_OUTPUT].value = Out_1;
 		}
@@ -155,7 +142,7 @@ void SwitchedMult::step() {
 	else {
 		if(inputs[IN_1_INPUT].active) {
 		Out_1 = IN_1 + IN_2 + IN_3 + IN_4;
-	
+		
 		outputs[OUT_1_OUTPUT].value = Out_1;
 		outputs[OUT_2_OUTPUT].value = Out_1;
 		outputs[OUT_3_OUTPUT].value = Out_1;		
@@ -326,7 +313,7 @@ SwitchedMultWidget::SwitchedMultWidget()
 	addParam(createParam<CKSS>(Vec(105, 105 + space), module, SwitchedMult::IN_3_PARAM, 0.0, 1.0, 1.0));
 	addParam(createParam<CKSS>(Vec(105, 140 + space), module, SwitchedMult::IN_4_PARAM, 0.0, 1.0, 1.0));
 	
-	addParam(createParam<CKSS>(Vec(105, 187 + space), module, SwitchedMult::IN_5_PARAM, 0.0, 1.0, 1.0));
+	addParam(createParam<CKSS>(Vec(105, 188 + space), module, SwitchedMult::IN_5_PARAM, 0.0, 1.0, 1.0));
 	addParam(createParam<CKSS>(Vec(105, 222 + space), module, SwitchedMult::IN_6_PARAM, 0.0, 1.0, 1.0));
 	addParam(createParam<CKSS>(Vec(105, 257 + space), module, SwitchedMult::IN_7_PARAM, 0.0, 1.0, 1.0));
 	addParam(createParam<CKSS>(Vec(105, 292 + space), module, SwitchedMult::IN_8_PARAM, 0.0, 1.0, 1.0));
@@ -336,7 +323,7 @@ SwitchedMultWidget::SwitchedMultWidget()
 	addParam(createParam<CKSS>(Vec(75, 105 + space), module, SwitchedMult::MUTE_3_PARAM, 0.0, 1.0, 0.0));
 	addParam(createParam<CKSS>(Vec(75, 140 + space), module, SwitchedMult::MUTE_4_PARAM, 0.0, 1.0, 0.0));
 	
-	addParam(createParam<CKSS>(Vec(75, 187 + space), module, SwitchedMult::MUTE_5_PARAM, 0.0, 1.0, 0.0));
+	addParam(createParam<CKSS>(Vec(75, 188 + space), module, SwitchedMult::MUTE_5_PARAM, 0.0, 1.0, 0.0));
 	addParam(createParam<CKSS>(Vec(75, 222 + space), module, SwitchedMult::MUTE_6_PARAM, 0.0, 1.0, 0.0));
 	addParam(createParam<CKSS>(Vec(75, 257 + space), module, SwitchedMult::MUTE_7_PARAM, 0.0, 1.0, 0.0));
 	addParam(createParam<CKSS>(Vec(75, 292 + space), module, SwitchedMult::MUTE_8_PARAM, 0.0, 1.0, 0.0));
