@@ -34,7 +34,7 @@ With the +/- switches you can decide whether the two incoming signals are either
 ## SwitchedMult
 
 This multiplier got 8 inputs and 8 outputs.  
-Inputs 1-2, 3-4, 5-6, 7-8 will be added by each other unless muted or no signal.   
+Every Input can be muted (Switch or CV).
   
 Inputs 1-2 will added by each other and send to the Outputs 1-2.  
 Inputs 3-4 will added by each other and send to the Outputs 3-4.  
@@ -42,7 +42,7 @@ Inputs 5-6 will added by each other and send to the Outputs 5-6.
 Inputs 7-8 will added by each other and send to the Outputs 7-8.  
 
 Inputs 3-4(7-8) can also be sent to the Outputs 1-2(5-6) with the  
-2or4 Switch which lets you choose between 2 outs or 4 outs.  
+"2or4" Switch (CV or Switch) which lets you choose between 2 outs or 4 outs.  
   
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/SwitchedMULT.png)  
   
