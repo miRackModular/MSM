@@ -36,8 +36,8 @@ struct Fade : Module {
 	void step() override;	
 };
 
-void Fade::step() {
-	
+void Fade::step()
+{
 	float CrossfadeA = clampf(params[CF_A_PARAM].value + inputs[CVA_INPUT].value, 0.0, 1.0);
 	float IN_1 = inputs[IN_1_INPUT].value;
 	float IN_2 = inputs[IN_2_INPUT].value;
