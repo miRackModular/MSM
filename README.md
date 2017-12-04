@@ -51,7 +51,7 @@ This Panel will keep your Rack clean.
   
 
 
-## Fade (COMING SOON!)
+## Fade
 
 Fade is a fairly simple crossfader module.
   
