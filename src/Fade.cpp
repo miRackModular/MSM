@@ -43,33 +43,39 @@ void Fade::step() {
 	float IN_2 = inputs[IN_2_INPUT].value;
 	float OutA;
 	
-	if(CrossfadeA < 0.5)
+	if(CrossfadeA < 0.5) {
 		OutA = crossf(IN_1, IN_1, CrossfadeA);
-	else(CrossfadeA > 1.0);
+	}
+	else(CrossfadeA > 1.0); 
 		OutA = crossf(IN_1, IN_2, CrossfadeA);
 	outputs[OUT_A_OUTPUT].value = OutA;
+	
 	
 	float CrossfadeB = clampf(params[CF_B_PARAM].value + inputs[CVB_INPUT].value, 0.0, 1.0);
 	float IN_3 = inputs[IN_3_INPUT].value;
 	float IN_4 = inputs[IN_4_INPUT].value;
 	float OutB;
 	
-	if(CrossfadeB < 0.5) 
+	if(CrossfadeB < 0.5) {
 		OutB = crossf(IN_3, IN_3, CrossfadeB);
+	}
 	else(CrossfadeB > 1.0);
 		OutB = crossf(IN_3, IN_4, CrossfadeB);
 	outputs[OUT_B_OUTPUT].value = OutB;
+	
 	
 	float CrossfadeAB = clampf(params[CF_AB_PARAM].value + inputs[CVAB_INPUT].value, 0.0, 1.0);
 	float IN_A = OutA;
 	float IN_B = OutB;
 	float OutAB;
 	
-	if(CrossfadeAB < 0.5) 
+	if(CrossfadeAB < 0.5) {
 		OutAB = crossf(IN_A, IN_A, CrossfadeAB);
-	else(CrossfadeAB > 1.0);
+	}
+	else(CrossfadeAB > 1.0); 
 		OutAB = crossf(IN_A, IN_B, CrossfadeAB);
 	outputs[OUT_AB_OUTPUT].value = OutAB;
+	
 	
 };
 
