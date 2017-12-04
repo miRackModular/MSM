@@ -25,9 +25,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="62.626019"
-     inkscape:cy="55.295344"
+     inkscape:zoom="2"
+     inkscape:cx="-52.782474"
+     inkscape:cy="187.25792"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -122,27 +122,27 @@
        inkscape:connector-curvature="0" />
     <g
        aria-label="MULT"
-       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#010101;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        id="text905"
        transform="translate(-0.74198017)">
       <path
          d="m 15.987906,198.44415 h 0.485069 l 0.245291,0.90261 0.243913,-0.90261 h 0.487825 v 2.05741 h -0.350022 v -1.64814 l -0.21773,0.89986 h -0.323839 l -0.220486,-0.89986 v 1.64814 h -0.350021 z"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332;fill:#010101;fill-opacity:1"
          id="path907"
          inkscape:connector-curvature="0" />
       <path
          d="m 17.713209,199.74226 v -1.29811 h 0.406522 v 1.40008 q 0,0.15434 0.07855,0.24254 0.07855,0.0868 0.21773,0.0868 0.139182,0 0.21773,-0.0868 0.07855,-0.0882 0.07855,-0.24254 v -1.40008 h 0.406521 v 1.29811 q 0,0.41892 -0.166742,0.60909 -0.166743,0.19017 -0.536057,0.19017 -0.367936,0 -0.536057,-0.19017 -0.166743,-0.19017 -0.166743,-0.60909 z"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332;fill:#010101;fill-opacity:1"
          id="path909"
          inkscape:connector-curvature="0" />
       <path
          d="m 19.574939,200.50156 v -2.05741 h 0.406521 v 1.69912 h 0.869542 v 0.35829 z"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332;fill:#010101;fill-opacity:1"
          id="path911"
          inkscape:connector-curvature="0" />
       <path
          d="m 22.015445,200.50156 h -0.406521 v -1.70188 h -0.522277 v -0.35553 h 1.451074 v 0.35553 h -0.522276 z"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;font-family:'DejaVu Sans Mono';-inkscape-font-specification:'DejaVu Sans Mono Bold';stroke-width:0.26458332;fill:#010101;fill-opacity:1"
          id="path913"
          inkscape:connector-curvature="0" />
     </g>
@@ -997,5 +997,16 @@
            id="tspan11627"
            sodipodi:role="line">M</tspan></text>
     </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="-41.804165"
+       y="202.14687"
+       id="text994"><tspan
+         sodipodi:role="line"
+         id="tspan992"
+         x="-41.804165"
+         y="211.51064"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Funky Rundkopf NF';-inkscape-font-specification:'Funky Rundkopf NF';stroke-width:0.26458332" /></text>
   </g>
 </svg>
