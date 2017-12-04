@@ -11,10 +11,11 @@ void init(rack::Plugin *p) {
 #endif
 	p->website = "https://github.com/Phal-anx/MS-Modules";
 	
-	p->addModel(createModel<RandomSourceV1Widget>("MSM", "Random SourceV1", "Random Source-1", SAMPLE_AND_HOLD_TAG));
-	p->addModel(createModel<RandomSourceV2Widget>("MSM", "Random SourceV2", "Random Source-2", SAMPLE_AND_HOLD_TAG));
+	p->addModel(createModel<RandomSourceV1Widget>("MSM", "Random Source-1", "Random Source-1", SAMPLE_AND_HOLD_TAG));
+	p->addModel(createModel<RandomSourceV2Widget>("MSM", "Random Source-2", "Random Source-2", SAMPLE_AND_HOLD_TAG));
 	p->addModel(createModel<MultWidget>("MSM", "Mult", "Mult", MULTIPLE_TAG));
 	p->addModel(createModel<SwitchedMultWidget>("MSM", "SwitchedMult", "SwitchedMult", MULTIPLE_TAG));
 	p->addModel(createModel<BlankPanelWidget>("MSM", "Blank Panel", "Blank Panel", BLANK_TAG));
+	p->addModel(createModel<FadeWidget>("MSM", "Fade", "Fade", MIXER_TAG));
 		
 }
