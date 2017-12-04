@@ -30,7 +30,7 @@ With the +/- switches you can decide whether the two incoming signals are either
   
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Mult.png)  
   
-
+  
 ## SwitchedMult
 
 This multiplier got 8 inputs and 8 outputs.  
@@ -42,15 +42,8 @@ Inputs 5-8 will regulary go to Output 5-8
 2or4 Switch: This switch lets you choose between 2 outs or 4 outs.  
   
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/SwitchedMULT.png)  
-
-## BlankPanel  
   
-This Panel will keep your Rack clean.  
   
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/BlankPanel.png)  
-  
-
-
 ## Fade
 
 Fade is a fairly simple crossfader module.
@@ -63,3 +56,12 @@ Every Knob can be control via CV inputs (CV A, CV B, CV AB).
 This module got 3 Outputs: Mix A, Mix B and Mix AB
 
 ![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/Fade.png)  
+  
+  
+
+## BlankPanel  
+  
+This Panel will keep your Rack clean.  
+  
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/BlankPanel.png)  
+  
