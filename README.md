@@ -8,7 +8,7 @@ https://www.youtube.com/watch?v=m9auf7dpMrU
   
 "Sample" knob is a volume control for the Sample input.  
   
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSourceV1.png)  
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSourcev1.png)  
   
 
 ## Random Source v2  
@@ -20,7 +20,7 @@ This modules doesnt need additional modules to work.
 Inputs: Sample, FM, Ext Clock  
 Outputs: S&H, Square LFO  
   
-![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSourceV2.png)  
+![](https://github.com/Phal-anx/MS-Modules/blob/master/Image/RandomSourcev2.png)  
   
 
 ## Mult  
