@@ -1,7 +1,6 @@
 #include "MSM.hpp"
 
 
-
 struct SwitchedMult : Module {
 	
 	enum ParamIds {
@@ -33,22 +32,22 @@ struct SwitchedMult : Module {
 		IN_6_INPUT,
 		IN_7_INPUT,
 		IN_8_INPUT,
-		CV_1_INPUT,
-		CV_2_INPUT,
-		CV_3_INPUT,
-		CV_4_INPUT,
-		CV_5_INPUT,
-		CV_6_INPUT,
-		CV_7_INPUT,
-		CV_8_INPUT,
-		CV_11_INPUT,
-		CV_12_INPUT,
-		CV_13_INPUT,
-		CV_14_INPUT,
-		CV_15_INPUT,
-		CV_16_INPUT,
-		CV_17_INPUT,
-		CV_18_INPUT,
+		MUTE_CV_1_INPUT,
+		MUTE_CV_2_INPUT,
+		MUTE_CV_3_INPUT,
+		MUTE_CV_4_INPUT,
+		MUTE_CV_5_INPUT,
+		MUTE_CV_6_INPUT,
+		MUTE_CV_7_INPUT,
+		MUTE_CV_8_INPUT,
+		SWITCH_CV1_INPUT,
+		SWITCH_CV2_INPUT,
+		SWITCH_CV3_INPUT,
+		SWITCH_CV4_INPUT,
+		SWITCH_CV5_INPUT,
+		SWITCH_CV6_INPUT,
+		SWITCH_CV7_INPUT,
+		SWITCH_CV8_INPUT,
 		NUM_INPUTS
 	};
 	
@@ -72,23 +71,24 @@ struct SwitchedMult : Module {
 void SwitchedMult::step() {
 
 	//Inputs
-	float IN_1 = inputs[IN_1_INPUT].active ? inputs[IN_1_INPUT].value : 0.0f;
-	float IN_2 = inputs[IN_2_INPUT].active ? inputs[IN_2_INPUT].value : 0.0f;
+	float IN_1 = inputs[IN_1_INPUT].active ? inputs[IN_1_INPUT].value : 0.0;
+	float IN_2 = inputs[IN_2_INPUT].active ? inputs[IN_2_INPUT].value : 0.0;
 	float IN_3 = inputs[IN_3_INPUT].active ? inputs[IN_3_INPUT].value : 0.0f;
 	float IN_4 = inputs[IN_4_INPUT].active ? inputs[IN_4_INPUT].value : 0.0f;
 	float IN_5 = inputs[IN_5_INPUT].active ? inputs[IN_5_INPUT].value : 0.0f;
 	float IN_6 = inputs[IN_6_INPUT].active ? inputs[IN_6_INPUT].value : 0.0f;
 	float IN_7 = inputs[IN_7_INPUT].active ? inputs[IN_7_INPUT].value : 0.0f;
 	float IN_8 = inputs[IN_8_INPUT].active ? inputs[IN_8_INPUT].value : 0.0f;	
+	
 	//Mutes
-	bool MUTE_1 = params[MUTE_1_PARAM].value + inputs[CV_1_INPUT].value > 0.0;
-	bool MUTE_2 = params[MUTE_2_PARAM].value + inputs[CV_2_INPUT].value > 0.0;
-	bool MUTE_3 = params[MUTE_3_PARAM].value + inputs[CV_3_INPUT].value > 0.0;
-	bool MUTE_4 = params[MUTE_4_PARAM].value + inputs[CV_4_INPUT].value > 0.0;
-	bool MUTE_5 = params[MUTE_5_PARAM].value + inputs[CV_5_INPUT].value > 0.0;
-	bool MUTE_6 = params[MUTE_6_PARAM].value + inputs[CV_6_INPUT].value > 0.0;
-	bool MUTE_7 = params[MUTE_7_PARAM].value + inputs[CV_7_INPUT].value > 0.0;
-	bool MUTE_8 = params[MUTE_8_PARAM].value + inputs[CV_8_INPUT].value > 0.0;
+	bool MUTE_1 = params[MUTE_1_PARAM].value + inputs[MUTE_CV_1_INPUT].value > 0.0;
+	bool MUTE_2 = params[MUTE_2_PARAM].value + inputs[MUTE_CV_2_INPUT].value > 0.0;
+	bool MUTE_3 = params[MUTE_3_PARAM].value + inputs[MUTE_CV_3_INPUT].value > 0.0;
+	bool MUTE_4 = params[MUTE_4_PARAM].value + inputs[MUTE_CV_4_INPUT].value > 0.0;
+	bool MUTE_5 = params[MUTE_5_PARAM].value + inputs[MUTE_CV_5_INPUT].value > 0.0;
+	bool MUTE_6 = params[MUTE_6_PARAM].value + inputs[MUTE_CV_6_INPUT].value > 0.0;
+	bool MUTE_7 = params[MUTE_7_PARAM].value + inputs[MUTE_CV_7_INPUT].value > 0.0;
+	bool MUTE_8 = params[MUTE_8_PARAM].value + inputs[MUTE_CV_8_INPUT].value > 0.0;
 	
 	
 	if(MUTE_1) {
@@ -116,111 +116,121 @@ void SwitchedMult::step() {
 		IN_8 = 0.0;
 	}
 	
-	//Switch 2or4
-	bool Switch2or4_1 = params[SWITCH2OR4_1_PARAM].value + inputs[CV_11_INPUT].value > 0.0;
-	bool Switch2or4_2 = params[SWITCH2OR4_2_PARAM].value + inputs[CV_12_INPUT].value > 0.0;
-	bool Switch2or4_3 = params[SWITCH2OR4_3_PARAM].value + inputs[CV_13_INPUT].value > 0.0;
-	bool Switch2or4_4 = params[SWITCH2OR4_4_PARAM].value + inputs[CV_14_INPUT].value > 0.0;
-	bool Switch2or4_5 = params[SWITCH2OR4_5_PARAM].value + inputs[CV_15_INPUT].value > 0.0;
-	bool Switch2or4_6 = params[SWITCH2OR4_6_PARAM].value + inputs[CV_16_INPUT].value > 0.0;
-	bool Switch2or4_7 = params[SWITCH2OR4_7_PARAM].value + inputs[CV_17_INPUT].value > 0.0;
-	bool Switch2or4_8 = params[SWITCH2OR4_8_PARAM].value + inputs[CV_18_INPUT].value > 0.0;
+	/////// TODO find a way to implement Switch 2or4 for 1, 2, 5, 6 ///////
+	
+	//Switches 2or4
+	//float Switch2or4_1 = params[SWITCH2OR4_1_PARAM].value + inputs[SWITCH_CV1_INPUT].value > 0.0f;
+	//float Switch2or4_2 = params[SWITCH2OR4_2_PARAM].value + inputs[SWITCH_CV2_INPUT].value > 0.0f;
+	float Switch2or4_3 = params[SWITCH2OR4_3_PARAM].value + inputs[SWITCH_CV3_INPUT].value > 0.0f;
+	float Switch2or4_4 = params[SWITCH2OR4_4_PARAM].value + inputs[SWITCH_CV4_INPUT].value > 0.0f;
+	//float Switch2or4_5 = params[SWITCH2OR4_5_PARAM].value + inputs[SWITCH_CV5_INPUT].value > 0.0f;
+	//float Switch2or4_6 = params[SWITCH2OR4_6_PARAM].value + inputs[SWITCH_CV6_INPUT].value > 0.0f;
+	float Switch2or4_7 = params[SWITCH2OR4_7_PARAM].value + inputs[SWITCH_CV7_INPUT].value > 0.0f;
+	float Switch2or4_8 = params[SWITCH2OR4_8_PARAM].value + inputs[SWITCH_CV8_INPUT].value > 0.0f;
 	
 	float Out_1, Out_2, Out_3, Out_4, Out_5, Out_6, Out_7, Out_8;
 	
-	if(Switch2or4_1) {
-		Out_1 = IN_1 + IN_2;		
-		outputs[OUT_1_OUTPUT].value = Out_1;
-		outputs[OUT_2_OUTPUT].value = Out_1;
-	}
-	else {
+	//if(Switch2or4_1) {
+	//	Out_1 = IN_1 + IN_2;
+	//	outputs[OUT_1_OUTPUT].value = Out_1;		
+	//	outputs[OUT_2_OUTPUT].value = Out_1;
+	//	outputs[OUT_3_OUTPUT].value = Out_1;		
+	//	outputs[OUT_4_OUTPUT].value = Out_1;
+	//}
+	//else {
 		Out_1 = IN_1 + IN_2;
 		outputs[OUT_1_OUTPUT].value = Out_1;
 		outputs[OUT_2_OUTPUT].value = Out_1;
-		outputs[OUT_3_OUTPUT].value = Out_1;		
-		outputs[OUT_4_OUTPUT].value = Out_1;
-	}
-	if(Switch2or4_2) {
+	//}
+		
+	//if(Switch2or4_2) {
+	//	Out_2 = IN_1 + IN_2;
+	//	outputs[OUT_1_OUTPUT].value = Out_2;
+	//	outputs[OUT_2_OUTPUT].value = Out_2;
+	//	outputs[OUT_3_OUTPUT].value = Out_2;		
+	//	outputs[OUT_4_OUTPUT].value = Out_2;
+	//}
+	//else {
 		Out_2 = IN_1 + IN_2;
 		outputs[OUT_1_OUTPUT].value = Out_2;
 		outputs[OUT_2_OUTPUT].value = Out_2;
-	}
-	else {
-		Out_2 = IN_1 + IN_2;
-		outputs[OUT_1_OUTPUT].value = Out_2;
-		outputs[OUT_2_OUTPUT].value = Out_2;
-		outputs[OUT_3_OUTPUT].value = Out_2;		
-		outputs[OUT_4_OUTPUT].value = Out_2;
-	}
+	//}
+		
 	if(Switch2or4_3) {
+		Out_3 = IN_3 + IN_4;
+		outputs[OUT_1_OUTPUT].value = Out_3;
+		outputs[OUT_2_OUTPUT].value = Out_3;
+		outputs[OUT_3_OUTPUT].value = Out_3;		
+		outputs[OUT_4_OUTPUT].value = Out_3;
+		}
+	else {
 		Out_3 = IN_3 + IN_4;
 		outputs[OUT_3_OUTPUT].value = Out_3;		
 		outputs[OUT_4_OUTPUT].value = Out_3;	
 	}
-	else {
-		Out_3 = IN_3 + IN_4;		
-		outputs[OUT_1_OUTPUT].value = Out_3;
-		outputs[OUT_2_OUTPUT].value = Out_3;
-		outputs[OUT_3_OUTPUT].value = Out_3;		
-		outputs[OUT_4_OUTPUT].value = Out_3;		
-	}
+		
 	if(Switch2or4_4) {
-		Out_4 = IN_3 + IN_4;
-		outputs[OUT_3_OUTPUT].value = Out_4;		
-		outputs[OUT_4_OUTPUT].value = Out_4;	
-	}
-	else {
 		Out_4 = IN_3 + IN_4;
 		outputs[OUT_1_OUTPUT].value = Out_4;
 		outputs[OUT_2_OUTPUT].value = Out_4;
 		outputs[OUT_3_OUTPUT].value = Out_4;		
-		outputs[OUT_4_OUTPUT].value = Out_4;		
-	}
-	if(Switch2or4_5) {
-		Out_5 = IN_5 + IN_6;
-		outputs[OUT_5_OUTPUT].value = Out_5;
-		outputs[OUT_6_OUTPUT].value = Out_5;	
+		outputs[OUT_4_OUTPUT].value = Out_4;
 	}
 	else {
+		Out_4 = IN_3 + IN_4;
+		outputs[OUT_3_OUTPUT].value = Out_4;		
+		outputs[OUT_4_OUTPUT].value = Out_4;	
+	}	
+	
+
+	//if(Switch2or4_5) {
+	//	Out_5 = IN_5 + IN_6;
+	//	outputs[OUT_5_OUTPUT].value = Out_5;
+	//	outputs[OUT_6_OUTPUT].value = Out_5;
+	//	outputs[OUT_7_OUTPUT].value = Out_5;		
+	//	outputs[OUT_8_OUTPUT].value = Out_5;
+	//}
+	//else {
 		Out_5 = IN_5 + IN_6;
 		outputs[OUT_5_OUTPUT].value = Out_5;
-		outputs[OUT_6_OUTPUT].value = Out_5;		
-		outputs[OUT_7_OUTPUT].value = Out_5;
-		outputs[OUT_8_OUTPUT].value = Out_5;		
-	}
-	if(Switch2or4_6) {
-		Out_6 = IN_5 + IN_6;	
-		outputs[OUT_5_OUTPUT].value = Out_6;
-		outputs[OUT_6_OUTPUT].value = Out_6;	
-	}
-	else {
+		outputs[OUT_6_OUTPUT].value = Out_5;
+	//}
+	
+	//if(Switch2or4_6) {
+	//	Out_6 = IN_5 + IN_6;
+	//	outputs[OUT_5_OUTPUT].value = Out_6;
+	//	outputs[OUT_6_OUTPUT].value = Out_6;
+	//	outputs[OUT_7_OUTPUT].value = Out_6;		
+	//	outputs[OUT_8_OUTPUT].value = Out_6;
+	//}
+	//else {
 		Out_6 = IN_5 + IN_6;
 		outputs[OUT_5_OUTPUT].value = Out_6;
 		outputs[OUT_6_OUTPUT].value = Out_6;		
-		outputs[OUT_7_OUTPUT].value = Out_6;
-		outputs[OUT_8_OUTPUT].value = Out_6;		
-	}
+	//}
+	
 	if(Switch2or4_7) {
 		Out_7 = IN_7 + IN_8;
+		outputs[OUT_5_OUTPUT].value = Out_7;
+		outputs[OUT_6_OUTPUT].value = Out_7;
 		outputs[OUT_7_OUTPUT].value = Out_7;		
 		outputs[OUT_8_OUTPUT].value = Out_7;	
 	}
 	else {
 		Out_7 = IN_7 + IN_8;
-		outputs[OUT_5_OUTPUT].value = Out_7;
-		outputs[OUT_6_OUTPUT].value = Out_7;		
 		outputs[OUT_7_OUTPUT].value = Out_7;
 		outputs[OUT_8_OUTPUT].value = Out_7;		
 	}
+		
 	if(Switch2or4_8) {
 		Out_8 = IN_7 + IN_8;
+		outputs[OUT_5_OUTPUT].value = Out_8;
+		outputs[OUT_6_OUTPUT].value = Out_8;
 		outputs[OUT_7_OUTPUT].value = Out_8;		
 		outputs[OUT_8_OUTPUT].value = Out_8;	
 	}
 	else {
 		Out_8 = IN_7 + IN_8;
-		outputs[OUT_5_OUTPUT].value = Out_8;
-		outputs[OUT_6_OUTPUT].value = Out_8;		
 		outputs[OUT_7_OUTPUT].value = Out_8;
 		outputs[OUT_8_OUTPUT].value = Out_8;		
 	}
@@ -247,15 +257,15 @@ SwitchedMultWidget::SwitchedMultWidget()
 	addChild(createScrew<ScrewSilver>(Vec(165, 0)));
 	addChild(createScrew<ScrewSilver>(Vec(165, 365)));
 	//PARAM
-	addParam(createParam<CKSS>(Vec(105, 35 + space), module, SwitchedMult::SWITCH2OR4_1_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 70 + space), module, SwitchedMult::SWITCH2OR4_2_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 105 + space), module, SwitchedMult::SWITCH2OR4_3_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 140 + space), module, SwitchedMult::SWITCH2OR4_4_PARAM, 0.0, 1.0, 1.0));
+	//addParam(createParam<CKSS>(Vec(105, 35 + space), module, SwitchedMult::SWITCH2OR4_1_PARAM, 0.0, 1.0, 0.0));
+	//addParam(createParam<CKSS>(Vec(105, 70 + space), module, SwitchedMult::SWITCH2OR4_2_PARAM, 0.0, 1.0, 0.0));
+	addParam(createParam<CKSS>(Vec(105, 105 + space), module, SwitchedMult::SWITCH2OR4_3_PARAM, 0.0, 1.0, 0.0));
+	addParam(createParam<CKSS>(Vec(105, 140 + space), module, SwitchedMult::SWITCH2OR4_4_PARAM, 0.0, 1.0, 0.0));
 	
-	addParam(createParam<CKSS>(Vec(105, 188 + space), module, SwitchedMult::SWITCH2OR4_5_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 222 + space), module, SwitchedMult::SWITCH2OR4_6_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 257 + space), module, SwitchedMult::SWITCH2OR4_7_PARAM, 0.0, 1.0, 1.0));
-	addParam(createParam<CKSS>(Vec(105, 292 + space), module, SwitchedMult::SWITCH2OR4_8_PARAM, 0.0, 1.0, 1.0));
+	//addParam(createParam<CKSS>(Vec(105, 188 + space), module, SwitchedMult::SWITCH2OR4_5_PARAM, 0.0, 1.0, 0.0));
+	//addParam(createParam<CKSS>(Vec(105, 222 + space), module, SwitchedMult::SWITCH2OR4_6_PARAM, 0.0, 1.0, 0.0));
+	addParam(createParam<CKSS>(Vec(105, 257 + space), module, SwitchedMult::SWITCH2OR4_7_PARAM, 0.0, 1.0, 0.0));
+	addParam(createParam<CKSS>(Vec(105, 292 + space), module, SwitchedMult::SWITCH2OR4_8_PARAM, 0.0, 1.0, 0.0));
 	
 	addParam(createParam<CKSS>(Vec(75, 35 + space), module, SwitchedMult::MUTE_1_PARAM, 0.0, 1.0, 0.0));
 	addParam(createParam<CKSS>(Vec(75, 70 + space), module, SwitchedMult::MUTE_2_PARAM, 0.0, 1.0, 0.0));
@@ -279,25 +289,25 @@ SwitchedMultWidget::SwitchedMultWidget()
 	addInput(createInput<SilverSixPort>(Vec(10, 292	+ space), module, SwitchedMult::IN_8_INPUT));
 	
 	//CV
-	addInput(createInput<SilverSixPort>(Vec(40, 35 + space), module, SwitchedMult::CV_1_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 70 + space), module, SwitchedMult::CV_2_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 105 + space), module, SwitchedMult::CV_3_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 140 + space), module, SwitchedMult::CV_4_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 35 + space), module, SwitchedMult::MUTE_CV_1_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 70 + space), module, SwitchedMult::MUTE_CV_2_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 105 + space), module, SwitchedMult::MUTE_CV_3_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 140 + space), module, SwitchedMult::MUTE_CV_4_INPUT));
 	
-	addInput(createInput<SilverSixPort>(Vec(40, 187 + space), module, SwitchedMult::CV_5_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 222 + space), module, SwitchedMult::CV_6_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 257 + space), module, SwitchedMult::CV_7_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(40, 292 + space), module, SwitchedMult::CV_8_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 187 + space), module, SwitchedMult::MUTE_CV_5_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 222 + space), module, SwitchedMult::MUTE_CV_6_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 257 + space), module, SwitchedMult::MUTE_CV_7_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(40, 292 + space), module, SwitchedMult::MUTE_CV_8_INPUT));
 	
-	addInput(createInput<SilverSixPort>(Vec(130, 35 + space), module, SwitchedMult::CV_11_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 70 + space), module, SwitchedMult::CV_12_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 105 + space), module, SwitchedMult::CV_13_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 140 + space), module, SwitchedMult::CV_14_INPUT));
+	//addInput(createInput<SilverSixPort>(Vec(130, 35 + space), module, SwitchedMult::SWITCH_CV1_INPUT));
+	//addInput(createInput<SilverSixPort>(Vec(130, 70 + space), module, SwitchedMult::SWITCH_CV2_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(130, 105 + space), module, SwitchedMult::SWITCH_CV3_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(130, 140 + space), module, SwitchedMult::SWITCH_CV4_INPUT));
 	
-	addInput(createInput<SilverSixPort>(Vec(130, 187 + space), module, SwitchedMult::CV_15_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 222 + space), module, SwitchedMult::CV_16_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 257 + space), module, SwitchedMult::CV_17_INPUT));
-	addInput(createInput<SilverSixPort>(Vec(130, 292 + space), module, SwitchedMult::CV_18_INPUT));
+	//addInput(createInput<SilverSixPort>(Vec(130, 187 + space), module, SwitchedMult::SWITCH_CV5_INPUT));
+	//addInput(createInput<SilverSixPort>(Vec(130, 222 + space), module, SwitchedMult::SWITCH_CV6_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(130, 257 + space), module, SwitchedMult::SWITCH_CV7_INPUT));
+	addInput(createInput<SilverSixPort>(Vec(130, 292 + space), module, SwitchedMult::SWITCH_CV8_INPUT));
 	
 	//OUTPUTS
 	addOutput(createOutput<SilverSixPort>(Vec(162, 35 + space), module, SwitchedMult::OUT_1_OUTPUT));
@@ -311,3 +321,4 @@ SwitchedMultWidget::SwitchedMultWidget()
 	addOutput(createOutput<SilverSixPort>(Vec(162, 292 + space), module, SwitchedMult::OUT_8_OUTPUT));
 	
 };
+
