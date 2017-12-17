@@ -74,6 +74,8 @@ void Mult::step() {
 	IN_3 = inputs[IN_5_INPUT].value - inputs[IN_6_INPUT].value;
 	}
 	
+	
+	
 	//Mult1	
 	outputs[OUT_11_OUTPUT].value = IN_1;
 	outputs[OUT_12_OUTPUT].value = IN_1;

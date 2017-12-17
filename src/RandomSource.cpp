@@ -1,6 +1,13 @@
 #include "MSM.hpp"
 #include "dsp/digital.hpp"
 
+#include "dsp/filter.hpp"
+#include "dsp/fft.hpp"
+
+#include <random>
+#include <complex>
+#include <cmath>
+
 struct LowFrequencyOscillator {
 	float phase = 0.0;
 	float pw = 0.5;
@@ -12,8 +19,8 @@ struct LowFrequencyOscillator {
 		resetTrigger.setThresholds(0.0, 0.01);
 	}
 	void setPitch(float pitch) {
-		pitch = fminf(pitch, 12.0);
-		freq = powf(24.0, pitch);
+		pitch = fminf(pitch, 8.0);
+		freq = powf(2.0, pitch);
 	}
 	void setPulseWidth(float pw_) {
 		const float pwMin = 0.01;
@@ -35,9 +42,7 @@ struct LowFrequencyOscillator {
 		float sqr = (phase < pw) ^ invert ? 1.0 : -1.0;
 		return offset ? sqr + 1.0 : sqr;
 	}
-	float light() {
-		return sinf(2*M_PI * phase);
-	}
+	
 };
 
 struct RandomSourceV1 : Module {
@@ -59,7 +64,6 @@ struct RandomSourceV1 : Module {
 		
 		SchmittTrigger trigger;
 		float sample = 0.0;
-		float SH_Light = {};
 				
 		RandomSourceV1() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {
 			trigger.setThresholds(0.0,0.7);
@@ -131,6 +135,7 @@ struct RandomSourceV2 : Module {
 		enum OutputIds {
 		SH_OUTPUT,
 		SQR_OUTPUT,
+		PINK_OUTPUT,
 		NUM_OUTPUTS
 	};
 		
@@ -138,6 +143,7 @@ struct RandomSourceV2 : Module {
 		NUM_LIGHTS
 	};
 	
+
 	LowFrequencyOscillator oscillator;
 	
 		SchmittTrigger trigger;
@@ -150,6 +156,9 @@ struct RandomSourceV2 : Module {
 };
 
 void RandomSourceV2::step()	{
+	
+	//Noise
+	float noise2 = 2.0 * randomNormal();
 	
 	//LFO
 	oscillator.setPitch(params[FREQ_PARAM].value + params[FM_PARAM].value * inputs[FM_INPUT].value);
@@ -167,8 +176,6 @@ void RandomSourceV2::step()	{
 		LFOout = outputs[SQR_OUTPUT].value;
 	}
 	
-	//Noise
-	float noise2 = 2.0 * randomNormal();
 	
 	//sample and hold
 	float range = noise2 + params[RANGE_PARAM].value;
@@ -203,11 +210,11 @@ RandomSourceV2Widget::RandomSourceV2Widget() {
 		addChild(createScrew<ScrewSilver>(Vec(105, 365)));
 		
 		//Param
-		addParam(createParam<GreyLargeKnob>(Vec(9, 95), module, RandomSourceV2::RANGE_PARAM, 0.0, 1.0, 1.0));
-		addParam(createParam<GreyLargeKnob>(Vec(9, 150), module, RandomSourceV2::FREQ_PARAM, 0.0, 1.0, 0.5));
+		addParam(createParam<GreyLargeKnob>(Vec(9, 95), module, RandomSourceV2::RANGE_PARAM, 0.0, 1.0, 0.0));
+		addParam(createParam<GreyLargeKnob>(Vec(9, 150), module, RandomSourceV2::FREQ_PARAM,-8.0, 8.0, 0.0));
 		addParam(createParam<GreyLargeKnob>(Vec(62, 123), module, RandomSourceV2::FM_PARAM, 0.0, 1.0, 0.0));
 		addParam(createParam<CKSS>(Vec(20, 32), module, RandomSourceV2::OFFSET_PARAM, 0.0, 1.0, 0.0));
-						
+		
 		//Inputs
 		addInput(createInput<SilverSixPort>(Vec(10, 239), module, RandomSourceV2::SH_INPUT));
 		addInput(createInput<SilverSixPort>(Vec(10, 285), module, RandomSourceV2::FM_INPUT));

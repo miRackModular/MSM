@@ -78,10 +78,17 @@ struct SwitchedMultWidget : ModuleWidget {
 	SwitchedMultWidget();
 };
 
-struct BlankPanelWidget : ModuleWidget {
-	BlankPanelWidget();
+struct LFOWidget : ModuleWidget {
+	LFOWidget();
 };
 
 struct FadeWidget : ModuleWidget {
 	FadeWidget();
 };
+
+struct BlankPanelWidget : ModuleWidget {
+	BlankPanelWidget();
+};
+
+
+
