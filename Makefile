@@ -1,5 +1,5 @@
 SLUG = MSM
-VERSION = 0.5.0
+VERSION = 0.5.4
 
 FLAGS += -D v050
 
