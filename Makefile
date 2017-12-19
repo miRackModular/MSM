@@ -10,7 +10,7 @@ include ../../plugin.mk
 
 dist: all
 	mkdir -p dist/$(SLUG)
-	cp LICENSE* dist/$(SLUG)/
+	cp License* dist/$(SLUG)/
 	cp plugin.* dist/$(SLUG)/
 	cp -R res dist/$(SLUG)/
 	cp -R Help dist/$(SLUG)/
