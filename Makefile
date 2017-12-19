@@ -1,3 +1,4 @@
+SLUG = MSM
 VERSION = 0.5.0
 
 FLAGS += -D v050
@@ -8,8 +9,8 @@ include ../../plugin.mk
 
 
 dist: all
-	mkdir -p dist/MSM
-	cp LICENSE* dist/MSM/
-	cp plugin.* dist/MSM/
-	cp -R res dist/MSM/
-	cp -R Help dist/MSM/
+	mkdir -p dist/$(SLUG)
+	cp LICENSE* dist/$(SLUG)/
+	cp plugin.* dist/$(SLUG)/
+	cp -R res dist/$(SLUG)/
+	cp -R Help dist/$(SLUG)/
