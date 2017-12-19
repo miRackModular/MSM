@@ -1,3 +1,5 @@
+VERSION = 0.5.0
+
 FLAGS += -D v050
 
 SOURCES = $(wildcard src/*.cpp)
