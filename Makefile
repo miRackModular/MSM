@@ -1,16 +1,19 @@
 SLUG = MSM
-VERSION = 0.5.4
+VERSION = 0.5.5
 
-FLAGS += -D v050
+# FLAGS will be passed to both the C and C++ compiler
+FLAGS +=
+CFLAGS +=
+CXXFLAGS +=
 
-SOURCES = $(wildcard src/*.cpp)
+# Careful about linking to libraries, since you can't assume much about the user's environment and library search path.
+# Static libraries are fine.
+LDFLAGS +=
+
+# Add .cpp and .c files to the build
+SOURCES += $(wildcard src/*.cpp)
+
+# Add files to the ZIP package when running `make dist`
+DISTRIBUTABLES += $(wildcard License*) res Help
 
 include ../../plugin.mk
-
-
-dist: all
-	mkdir -p dist/$(SLUG)
-	cp License* dist/$(SLUG)/
-	cp plugin.* dist/$(SLUG)/
-	cp -R res dist/$(SLUG)/
-	cp -R Help dist/$(SLUG)/
