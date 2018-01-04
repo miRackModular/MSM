@@ -90,5 +90,8 @@ struct BlankPanelWidget : ModuleWidget {
 	BlankPanelWidget();
 };
 
+struct WaveShaperWidget : ModuleWidget {
+	WaveShaperWidget();
+};
 
 

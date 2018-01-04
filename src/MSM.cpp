@@ -18,6 +18,6 @@ void init(rack::Plugin *p) {
 	p->addModel(createModel<FadeWidget>("MSM", "Fade", "Fade", MIXER_TAG));
 	p->addModel(createModel<LFOWidget>("MSM", "MLFO", "MLFO", LFO_TAG));
 	p->addModel(createModel<BlankPanelWidget>("MSM", "Blank Panel", "Blank Panel", BLANK_TAG));
-	
-		
+	p->addModel(createModel<WaveShaperWidget>("MSM", "WaveShaper", "WaveShaper", UTILITY_TAG));
+
 }
