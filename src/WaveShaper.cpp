@@ -13,8 +13,6 @@ struct WaveShaper : Module {
 		SHAPE_1_CV_PARAM,
 		SHAPE_2_CV_PARAM,
 		SHAPE_3_CV_PARAM,
-		MIX_PARAM,
-		MIX_CV_PARAM,
 		INPUT_GAIN_PARAM,
 		OUTPUT_GAIN_PARAM,
 		NUM_PARAMS
@@ -25,13 +23,11 @@ struct WaveShaper : Module {
 		SHAPE_1_CV_INPUT,
 		SHAPE_2_CV_INPUT,
 		SHAPE_3_CV_INPUT,
-		MIX_CV_INPUT,
 		NUM_INPUTS
 	};
 	
 	enum OutputIds {
 		OUT_1_OUTPUT,
-		OUT_MIX_OUTPUT,
 		NUM_OUTPUTS
 	};
 	
