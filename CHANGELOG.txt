@@ -27,4 +27,3 @@ deleted RANDOM SOURCE v2
 redesigned RANDOM SOURCE (formally v1)  
   
 redesigned MULT  
-  
