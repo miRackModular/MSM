@@ -1,5 +1,13 @@
 CHANGELOG
 
+v.0.6.1 (01. June 2018)  
+  
+added Dual-Delay - A syncable dual delay module which can work in mono, stereo and dual mode  
+  
+upgraded the Random Source module with a cv input for the sample input which now allows to modulate the gain of the incoming sample signal.  
+upgraded every module with a night-mode skin   
+
+
 v.0.6.0 (18. March 2018)  
   
 added PAN-VCA - A multifunctional VCA  
