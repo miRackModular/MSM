@@ -1,4 +1,8 @@
 CHANGELOG
+v.0.6.2 (13. June 2018)
+
+added Wavefolder
+optimized OSCiX
 
 v.0.6.1 (01. June 2018)  
   
