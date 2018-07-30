@@ -1,9 +1,20 @@
-CHANGELOG
+CHANGELOG  
+
+v.0.6.3 (40. July 2018)  
+  
+added Noise  
+added Phaser  
+added Bitcrusher  
+added Morph  
+added Ring  
+
+fixed ADSR 
+
 v.0.6.2 (13. June 2018)
-
-added Wavefolder
-optimized OSCiX
-
+  
+added Wavefolder  
+optimized OSCiX  
+  
 v.0.6.1 (01. June 2018)  
   
 added Dual-Delay - A syncable dual delay module which can work in mono, stereo and dual mode  
