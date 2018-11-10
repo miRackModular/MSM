@@ -1,6 +1,13 @@
 CHANGELOG  
 
-v.0.6.3 (40. July 2018)  
+v.0.6.4 (10. November 2018)
+
+added Treasure VCO
+
+fixed the sync mode of the Dual Delay module and added dotted and triplet delay times.
+added shape knobs for attack, decay and release to the ADSR.
+
+v.0.6.3 (04. July 2018)  
   
 added Noise  
 added Phaser  
