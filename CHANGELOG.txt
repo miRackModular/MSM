@@ -1,5 +1,13 @@
 CHANGELOG  
 
+v.0.6.5 (16. January 2019)
+
+XSEQ: fixed/updated module layout and internally routings
+ADSR: added cv input for the decay shape + an option to choose between 12db or 24db slope via right click menu
+CRAZYMULT: fixed/updated module layout and all internal routings.
+WAVEFOLDER: fixed the mix control + cv input
+DUAL DELAY: now the internal filters also work on the wet signal outputs
+
 v.0.6.4 (10. November 2018)
 
 added Treasure VCO
