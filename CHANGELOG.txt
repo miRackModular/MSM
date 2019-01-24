@@ -1,5 +1,13 @@
 CHANGELOG  
 
+v.0.6.51 (23. Hanuary 2019)
+
+ADSR: cv input for sustain fixed (Rack shouldn't crash anymore)
+
+DUAL DELAY: fixed the wet signal (again),
+added the option to clear the buffers of delay A & B via buttons or cv inputs,
+rearranged the right side of the module to make it look better
+
 v.0.6.5 (16. January 2019)
 
 XSEQ: fixed/updated module layout and internally routings
