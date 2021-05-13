@@ -96,27 +96,11 @@ void RandomSource::step() {
 };
 
 struct RandomSourceWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	RandomSourceWidget(RandomSource *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 RandomSourceWidget::RandomSourceWidget(RandomSource *module) : ModuleWidget(module) {
-	box.size = Vec(8 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Random Source.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Random Source-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Random Source.svg")));
 	
 	//Screw
 	addChild(Widget::create<MScrewB>(Vec(15, 0)));
@@ -144,46 +128,5 @@ RandomSourceWidget::RandomSourceWidget(RandomSource *module) : ModuleWidget(modu
 	addOutput(Port::create<SilverSixPort>(Vec(80, 327.5), Port::OUTPUT, module, RandomSource::SLEWED_OUT));
 	
 };
-
-void RandomSourceWidget::step() {
-	RandomSource *randomsource = dynamic_cast<RandomSource*>(module);
-	assert(randomsource);
-	panelClassic->visible = (randomsource->Theme == 0);
-	panelNightMode->visible = (randomsource->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct RandomSClassicMenu : MenuItem {
-	RandomSource *randomsource;
-	void onAction(EventAction &e) override {
-		randomsource->Theme = 0;
-	}
-	void step() override {
-		rightText = (randomsource->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct RandomSNightModeMenu : MenuItem {
-	RandomSource *randomsource;
-	void onAction(EventAction &e) override {
-		randomsource->Theme = 1;
-	}
-	void step() override {
-		rightText = (randomsource->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* RandomSourceWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	RandomSource *randomsource = dynamic_cast<RandomSource*>(module);
-	assert(randomsource);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<RandomSClassicMenu>(&RandomSClassicMenu::text, "Classic (default)", &RandomSClassicMenu::randomsource, randomsource));
-	menu->addChild(construct<RandomSNightModeMenu>(&RandomSNightModeMenu::text, "Night Mode", &RandomSNightModeMenu::randomsource, randomsource));
-	return menu;
-}
 
 Model *modelRandomSource = Model::create<RandomSource, RandomSourceWidget>("MSM", "Random Source", "Random Source", SAMPLE_AND_HOLD_TAG, RANDOM_TAG);

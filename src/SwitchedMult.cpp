@@ -115,11 +115,11 @@ struct CrazyMult : Module {
 			Type = json_integer_value(TypeJ);
 	}	
 	
-	void reset() override {
+	void onReset() override {
 		Type = 0;
 	}
 	
-	void randomize() override {}
+	void onRandomize() override {}
 	
 };
 
@@ -234,27 +234,13 @@ void CrazyMult::step() {
 };
 
 struct CrazyMultWidget : ModuleWidget {
-		// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	CrazyMultWidget(CrazyMult *module);
-	void step() override;
 	
 	Menu* createContextMenu() override;
 };
 
 CrazyMultWidget::CrazyMultWidget(CrazyMult *module) : ModuleWidget(module) {
-	box.size = Vec(16 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/CrazyMult.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/CrazyMult-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/CrazyMult.svg")));
 	
 	int space = 25;
 	int horspace = 20;
@@ -319,36 +305,6 @@ CrazyMultWidget::CrazyMultWidget(CrazyMult *module) : ModuleWidget(module) {
 	
 };
 
-void CrazyMultWidget::step() {
-	CrazyMult *crazymult = dynamic_cast<CrazyMult*>(module);
-	assert(crazymult);
-	panelClassic->visible = (crazymult->Theme == 0);
-	panelNightMode->visible = (crazymult->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct ClassicMenu : MenuItem {
-	CrazyMult *crazymult;
-	void onAction(EventAction &e) override {
-		crazymult->Theme = 0;
-	}
-	void step() override {
-		rightText = (crazymult->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct NightModeMenu : MenuItem {
-	CrazyMult *crazymult;
-	void onAction(EventAction &e) override {
-		crazymult->Theme = 1;
-	}
-	void step() override {
-		rightText = (crazymult->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
 struct TypeMenuPlus : MenuItem {
 	CrazyMult *crazymult;
 	void onAction(EventAction &e) override {
@@ -375,10 +331,6 @@ Menu* CrazyMultWidget::createContextMenu() {
 	Menu* menu = ModuleWidget::createContextMenu();
 	CrazyMult *crazymult = dynamic_cast<CrazyMult*>(module);
 	assert(crazymult);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<ClassicMenu>(&ClassicMenu::text, "Classic (default)", &ClassicMenu::crazymult, crazymult));
-	menu->addChild(construct<NightModeMenu>(&NightModeMenu::text, "Night Mode", &NightModeMenu::crazymult, crazymult));
 	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Type"));
 	menu->addChild(construct<TypeMenuPlus>(&TypeMenuPlus::text, "Positive", &TypeMenuPlus::crazymult, crazymult));
 	menu->addChild(construct<TypeMenuMinus>(&TypeMenuMinus::text, "Negative", &TypeMenuMinus::crazymult, crazymult));

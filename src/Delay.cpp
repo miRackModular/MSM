@@ -580,28 +580,13 @@ struct DelayWidget : ModuleWidget {
 	DisplayWidget *displayB;
 	TRatioADisplay *TRdisplayA;
 	TRatioBDisplay *TRdisplayB;
-	
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
+		
 	DelayWidget(Delay *module);
 	void step() override;
-	
-	Menu* createContextMenu() override;	
 };
 
 DelayWidget::DelayWidget(Delay *module) : ModuleWidget(module) {
-	box.size = Vec(25 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Delay.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Delay-Dark.svg")));
-	addChild(panelNightMode);	
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Delay.svg")));
 	
 	{
 		displayA = new DisplayWidget();
@@ -686,9 +671,6 @@ DelayWidget::DelayWidget(Delay *module) : ModuleWidget(module) {
 void DelayWidget::step() {
 	Delay *delay = dynamic_cast<Delay*>(module);
 	assert(delay);
-	// Panel Theme
-	panelClassic->visible = (delay->Theme == 0);
-	panelNightMode->visible = (delay->Theme == 1);
 	// Display 
 	displayA->visible = (delay->DISPLAYA == 0);
 	TRdisplayA->visible = (delay->DISPLAYA == 1);
@@ -697,39 +679,5 @@ void DelayWidget::step() {
 	
 	ModuleWidget::step();
 }
-
-struct BPClassicMenu : MenuItem {
-	Delay *delay;
-	void onAction(EventAction &e) override {
-		delay->Theme = 0;
-	}
-	void step() override {
-		rightText = (delay->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct BPNightModeMenu : MenuItem {
-	Delay *delay;
-	void onAction(EventAction &e) override {
-		delay->Theme = 1;
-	}
-	void step() override {
-		rightText = (delay->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* DelayWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Delay *delay = dynamic_cast<Delay*>(module);
-	assert(delay);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<BPClassicMenu>(&BPClassicMenu::text, "Classic (default)", &BPClassicMenu::delay, delay));
-	menu->addChild(construct<BPNightModeMenu>(&BPNightModeMenu::text, "Night Mode", &BPNightModeMenu::delay, delay));
-	return menu;
-}
-
 
 Model *modelDelay = Model::create<Delay, DelayWidget>("MSM", "Dual Delay", "Dual Delay", DELAY_TAG);

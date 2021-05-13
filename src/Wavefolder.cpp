@@ -77,8 +77,8 @@ void Wavefolder::step() {
 	type = params[TYPESWITCH].value;
 	
 	IN_1 = inputs[IN_INPUT].active ? inputs[IN_INPUT].value : 0.0f;
-	UP = clamp(params[UP_PARAM].value + inputs[UP_INPUT].value, 0.0f, 4.0f);
-	DOWN = clamp(params[DOWN_PARAM].value + inputs[DOWN_INPUT].value, 0.0f, 4.0f);
+	UP = clamp(params[UP_PARAM].value + inputs[UP_INPUT].value / 2.5f, 0.0f, 4.0f);
+	DOWN = clamp(params[DOWN_PARAM].value + inputs[DOWN_INPUT].value / 2.5f, 0.0f, 4.0f);
 	
 		SHAPE_MOD = params[SHAPE_PARAM].value;
 	
@@ -110,27 +110,11 @@ void Wavefolder::step() {
 };
 
 struct WavefolderWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	WavefolderWidget(Wavefolder *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;	
 };
 
 WavefolderWidget::WavefolderWidget(Wavefolder *module) : ModuleWidget(module) {
-	box.size = Vec(6 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Wavefolder.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Wavefolder-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Wavefolder.svg")));
 	
 	addChild(Widget::create<MScrewA>(Vec(0, 0)));
 	addChild(Widget::create<MScrewC>(Vec(box.size.x-15, 0)));
@@ -160,46 +144,5 @@ WavefolderWidget::WavefolderWidget(Wavefolder *module) : ModuleWidget(module) {
 	addInput(Port::create<SilverSixPortA>(Vec(5, 330), Port::INPUT, module, Wavefolder::IN_INPUT));
 	addOutput(Port::create<SilverSixPort>(Vec(60, 330), Port::OUTPUT, module, Wavefolder::OUT_OUTPUT));
 };
-
-void WavefolderWidget::step() {
-	Wavefolder *wavefolder = dynamic_cast<Wavefolder*>(module);
-	assert(wavefolder);
-	panelClassic->visible = (wavefolder->Theme == 0);
-	panelNightMode->visible = (wavefolder->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct WFClassicMenu : MenuItem {
-	Wavefolder *wavefolder;
-	void onAction(EventAction &e) override {
-		wavefolder->Theme = 0;
-	}
-	void step() override {
-		rightText = (wavefolder->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct WFNightModeMenu : MenuItem {
-	Wavefolder *wavefolder;
-	void onAction(EventAction &e) override {
-		wavefolder->Theme = 1;
-	}
-	void step() override {
-		rightText = (wavefolder->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* WavefolderWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Wavefolder *wavefolder = dynamic_cast<Wavefolder*>(module);
-	assert(wavefolder);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<WFClassicMenu>(&WFClassicMenu::text, "Classic (default)", &WFClassicMenu::wavefolder, wavefolder));
-	menu->addChild(construct<WFNightModeMenu>(&WFNightModeMenu::text, "Night Mode", &WFNightModeMenu::wavefolder, wavefolder));
-	return menu;
-}
 
 Model *modelWavefolder = Model::create<Wavefolder, WavefolderWidget>("MSM", "Wavefolder", "Wavefolder", WAVESHAPER_TAG);	

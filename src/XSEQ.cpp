@@ -453,28 +453,12 @@ void xseq::step() {
 };
 
 struct xseqWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	xseqWidget(xseq *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;	
 };
 
 xseqWidget::xseqWidget(xseq *module) : ModuleWidget(module) {
-	box.size = Vec(16 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/XSEQ-Expension.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/XSEQ-Expension-Dark.svg")));
-	addChild(panelNightMode);
-		
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/XSEQ-Expension.svg")));
+
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewB>(Vec(15, 365)));
 	addChild(Widget::create<MScrewD>(Vec(box.size.x-90, 0)));
@@ -535,46 +519,5 @@ xseqWidget::xseqWidget(xseq *module) : ModuleWidget(module) {
 	addInput(Port::create<SilverSixPortC>(Vec(197, 265), Port::INPUT, module, xseq::B8_INPUT));
 	addInput(Port::create<SilverSixPortD>(Vec(197, 300), Port::INPUT, module, xseq::B9_INPUT));
 };
-
-void xseqWidget::step() {
-	xseq *xs = dynamic_cast<xseq*>(module);
-	assert(xs);
-	panelClassic->visible = (xs->Theme == 0);
-	panelNightMode->visible = (xs->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct xsClassicMenu : MenuItem {
-	xseq *xs;
-	void onAction(EventAction &e) override {
-		xs->Theme = 0;
-	}
-	void step() override {
-		rightText = (xs->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct xsNightModeMenu : MenuItem {
-	xseq *xs;
-	void onAction(EventAction &e) override {
-		xs->Theme = 1;
-	}
-	void step() override {
-		rightText = (xs->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* xseqWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	xseq *xs = dynamic_cast<xseq*>(module);
-	assert(xs);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<xsClassicMenu>(&xsClassicMenu::text, "Classic (default)", &xsClassicMenu::xs, xs));
-	menu->addChild(construct<xsNightModeMenu>(&xsNightModeMenu::text, "Night Mode", &xsNightModeMenu::xs, xs));
-	return menu;
-}
 
 Model *modelxseq = Model::create<xseq, xseqWidget>("MSM", "XSEQ", "XSEQ", LOGIC_TAG, RANDOM_TAG);

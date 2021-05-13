@@ -55,7 +55,7 @@ struct Noise : Module {
 		if (ThemeJ)
 			Theme = json_integer_value(ThemeJ);
 	}
-	void reset() override {}
+	void onReset() override {}
 		
 };
 
@@ -125,29 +125,13 @@ void Noise::step() {
 };
 
 struct NoiseWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	NoiseWidget(Noise *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 
 NoiseWidget::NoiseWidget(Noise *module) : ModuleWidget(module) {
 	
-	box.size = Vec(4 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Noise.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Noise-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Noise.svg")));
 		
 	addChild(Widget::create<MScrewD>(Vec(0, 0)));
 	addChild(Widget::create<MScrewA>(Vec(0, 365)));
@@ -166,46 +150,5 @@ NoiseWidget::NoiseWidget(Noise *module) : ModuleWidget(module) {
 	addOutput(Port::create<SilverSixPort>(Vec(18, 300), Port::OUTPUT, module, Noise::CNOISE_OUTPUT));
 
 };
-
-void NoiseWidget::step() {
-	Noise *noise = dynamic_cast<Noise*>(module);
-	assert(noise);
-	panelClassic->visible = (noise->Theme == 0);
-	panelNightMode->visible = (noise->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct NClassicMenu : MenuItem {
-	Noise *noise;
-	void onAction(EventAction &e) override {
-		noise->Theme = 0;
-	}
-	void step() override {
-		rightText = (noise->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct NNightModeMenu : MenuItem {
-	Noise *noise;
-	void onAction(EventAction &e) override {
-		noise->Theme = 1;
-	}
-	void step() override {
-		rightText = (noise->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* NoiseWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Noise *noise = dynamic_cast<Noise*>(module);
-	assert(noise);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<NClassicMenu>(&NClassicMenu::text, "Classic (default)", &NClassicMenu::noise, noise));
-	menu->addChild(construct<NNightModeMenu>(&NNightModeMenu::text, "Night Mode", &NNightModeMenu::noise, noise));
-	return menu;
-}
 
 Model *modelNoise = Model::create<Noise, NoiseWidget>("MSM", "Noise", "Noise", NOISE_TAG);

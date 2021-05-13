@@ -166,27 +166,11 @@ void VCA::step() {
 };
 
 struct VCAWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	VCAWidget(VCA *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 VCAWidget::VCAWidget(VCA *module) : ModuleWidget(module) {
-	box.size = Vec(8 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/VCA.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/VCA-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/VCA.svg")));
 
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewD>(Vec(box.size.x-30, 0)));
@@ -219,46 +203,5 @@ VCAWidget::VCAWidget(VCA *module) : ModuleWidget(module) {
 	addOutput(Port::create<SilverSixPortA>(Vec(47, 320), Port::OUTPUT, module, VCA::SUM_NEG_A));	
 	
 };
-
-void VCAWidget::step() {
-	VCA *vca = dynamic_cast<VCA*>(module);
-	assert(vca);
-	panelClassic->visible = (vca->Theme == 0);
-	panelNightMode->visible = (vca->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct VCAClassicMenu : MenuItem {
-	VCA *vca;
-	void onAction(EventAction &e) override {
-		vca->Theme = 0;
-	}
-	void step() override {
-		rightText = (vca->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct VCANightModeMenu : MenuItem {
-	VCA *vca;
-	void onAction(EventAction &e) override {
-		vca->Theme = 1;
-	}
-	void step() override {
-		rightText = (vca->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* VCAWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	VCA *vca = dynamic_cast<VCA*>(module);
-	assert(vca);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<VCAClassicMenu>(&VCAClassicMenu::text, "Classic (default)", &VCAClassicMenu::vca, vca));
-	menu->addChild(construct<VCANightModeMenu>(&VCANightModeMenu::text, "Night Mode", &VCANightModeMenu::vca, vca));
-	return menu;
-}
 
 Model *modelVCA = Model::create<VCA, VCAWidget>("MSM", "PAN-VCA", "PAN-VCA", AMPLIFIER_TAG, PANNING_TAG);

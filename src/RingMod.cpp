@@ -82,27 +82,11 @@ void RingMod::step()
 };
 
 struct RingModWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	RingModWidget(RingMod *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };	
 
 RingModWidget::RingModWidget(RingMod *module) : ModuleWidget(module) {
-	box.size = Vec(5 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/RingMod.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/RingMod-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/RingMod.svg")));
 	
     addChild(Widget::create<MScrewB>(Vec(0, 0)));
     addChild(Widget::create<MScrewA>(Vec(box.size.x - 15, 0)));
@@ -122,46 +106,5 @@ RingModWidget::RingModWidget(RingMod *module) : ModuleWidget(module) {
     addOutput(Port::create<SilverSixPort>(Vec(45, 288), Port::OUTPUT, module, RingMod::OUTPUT_B));
 
 };
-
-void RingModWidget::step() {
-	RingMod *ringmod = dynamic_cast<RingMod*>(module);
-	assert(ringmod);
-	panelClassic->visible = (ringmod->Theme == 0);
-	panelNightMode->visible = (ringmod->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct RMClassicMenu : MenuItem {
-	RingMod *ringmod;
-	void onAction(EventAction &e) override {
-		ringmod->Theme = 0;
-	}
-	void step() override {
-		rightText = (ringmod->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct RMNightModeMenu : MenuItem {
-	RingMod *ringmod;
-	void onAction(EventAction &e) override {
-		ringmod->Theme = 1;
-	}
-	void step() override {
-		rightText = (ringmod->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* RingModWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	RingMod *ringmod = dynamic_cast<RingMod*>(module);
-	assert(ringmod);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<RMClassicMenu>(&RMClassicMenu::text, "Classic (default)", &RMClassicMenu::ringmod, ringmod));
-	menu->addChild(construct<RMNightModeMenu>(&RMNightModeMenu::text, "Night Mode", &RMNightModeMenu::ringmod, ringmod));
-	return menu;
-}
 
 Model *modelRingMod = Model::create<RingMod, RingModWidget>("MSM", "Ring", "Ring", RING_MODULATOR_TAG, EFFECT_TAG);

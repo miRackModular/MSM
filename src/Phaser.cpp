@@ -523,7 +523,7 @@ struct PhaserModule : Module {
 			Theme = json_integer_value(ThemeJ);
 	}
 
-	void reset() override {}
+	void onReset() override {}
 
 };
 
@@ -567,27 +567,11 @@ void PhaserModule::step() {
 };
 
 struct PhaserModuleWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	PhaserModuleWidget(PhaserModule *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 }; 
     
 PhaserModuleWidget::PhaserModuleWidget(PhaserModule *module) : ModuleWidget(module) {
-	box.size = Vec(6 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Phaser.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Phaser-Dark.svg")));
-	addChild(panelNightMode);	
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Phaser.svg")));
 
 	addChild(Widget::create<MScrewA>(Vec(0, 0)));
 	addChild(Widget::create<MScrewC>(Vec(box.size.x-15, 0)));
@@ -604,6 +588,7 @@ PhaserModuleWidget::PhaserModuleWidget(PhaserModule *module) : ModuleWidget(modu
 	addParam(ParamWidget::create<GreenSmallKnob>(Vec(50, 98), module, PhaserModule::FEEDBACK_PARAM, 0.0, 0.95, 0.475));
 	
 	addParam(ParamWidget::create<BlueSmallKnob>(Vec(9, 148), module, PhaserModule::STAGE_PARAM, 0.0, 18.0, 1.0));
+	dynamic_cast<Knob*>(params.back())->snap = true;
 	addParam(ParamWidget::create<GreenSmallKnob>(Vec(50, 148), module, PhaserModule::LFODEPTH, 0.0, 1.0, 0.1));	
 	
 	addParam(ParamWidget::create<BlueSmallKnob>(Vec(50, 208), module, PhaserModule::PW_PARAM, 0.0, 1.0, 0.5));
@@ -616,46 +601,5 @@ PhaserModuleWidget::PhaserModuleWidget(PhaserModule *module) : ModuleWidget(modu
 	addInput(Port::create<SilverSixPortA>(Vec(5, 328), Port::INPUT, module, PhaserModule::INPUT));
 	addOutput(Port::create<SilverSixPortB>(Vec(60, 328), Port::OUTPUT, module, PhaserModule::OUTPUT));	
 };
-
-void PhaserModuleWidget::step() {
-	PhaserModule *phasermodule = dynamic_cast<PhaserModule*>(module);
-	assert(phasermodule);
-	panelClassic->visible = (phasermodule->Theme == 0);
-	panelNightMode->visible = (phasermodule->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct PhaserClassicMenu : MenuItem {
-	PhaserModule *phasermodule;
-	void onAction(EventAction &e) override {
-		phasermodule->Theme = 0;
-	}
-	void step() override {
-		rightText = (phasermodule->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct PhaserNightModeMenu : MenuItem {
-	PhaserModule *phasermodule;
-	void onAction(EventAction &e) override {
-		phasermodule->Theme = 1;
-	}
-	void step() override {
-		rightText = (phasermodule->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* PhaserModuleWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	PhaserModule *phasermodule = dynamic_cast<PhaserModule*>(module);
-	assert(phasermodule);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<PhaserClassicMenu>(&PhaserClassicMenu::text, "Classic (default)", &PhaserClassicMenu::phasermodule, phasermodule));
-	menu->addChild(construct<PhaserNightModeMenu>(&PhaserNightModeMenu::text, "Night Mode", &PhaserNightModeMenu::phasermodule, phasermodule));
-	return menu;
-}
 
 Model *modelPhaserModule = Model::create<PhaserModule, PhaserModuleWidget>("MSM", "Phaser", "Phaser", EFFECT_TAG);

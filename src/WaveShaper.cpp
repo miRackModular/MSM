@@ -100,27 +100,11 @@ void WaveShaper::step()
 }
 
 struct WaveShaperWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	WaveShaperWidget(WaveShaper *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;	
 };
 
 WaveShaperWidget::WaveShaperWidget(WaveShaper *module) : ModuleWidget(module) {
-	box.size = Vec(11 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/WaveShaper.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/WaveShaper-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/WaveShaper.svg")));
 	
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewD>(Vec(15, 365)));
@@ -153,46 +137,5 @@ WaveShaperWidget::WaveShaperWidget(WaveShaper *module) : ModuleWidget(module) {
 
 	addOutput(Port::create<SilverSixPortB>(Vec(130, 320), Port::OUTPUT, module, WaveShaper::OUT_OUTPUT));
 };
-
-void WaveShaperWidget::step() {
-	WaveShaper *waveshaper = dynamic_cast<WaveShaper*>(module);
-	assert(waveshaper);
-	panelClassic->visible = (waveshaper->Theme == 0);
-	panelNightMode->visible = (waveshaper->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct WSClassicMenu : MenuItem {
-	WaveShaper *waveshaper;
-	void onAction(EventAction &e) override {
-		waveshaper->Theme = 0;
-	}
-	void step() override {
-		rightText = (waveshaper->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct WSNightModeMenu : MenuItem {
-	WaveShaper *waveshaper;
-	void onAction(EventAction &e) override {
-		waveshaper->Theme = 1;
-	}
-	void step() override {
-		rightText = (waveshaper->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* WaveShaperWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	WaveShaper *waveshaper = dynamic_cast<WaveShaper*>(module);
-	assert(waveshaper);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<WSClassicMenu>(&WSClassicMenu::text, "Classic (default)", &WSClassicMenu::waveshaper, waveshaper));
-	menu->addChild(construct<WSNightModeMenu>(&WSNightModeMenu::text, "Night Mode", &WSNightModeMenu::waveshaper, waveshaper));
-	return menu;
-}
 
 Model *modelWaveShaper = Model::create<WaveShaper, WaveShaperWidget>("MSM", "WaveShaper", "WaveShaper", WAVESHAPER_TAG);

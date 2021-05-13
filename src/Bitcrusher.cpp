@@ -90,7 +90,7 @@ struct Bitcrusher : Module {
 			Theme = json_integer_value(ThemeJ);
 	}
 
-	void reset() override {
+	void onReset() override {
 		BitC.reset();
 	}
 	
@@ -110,27 +110,11 @@ void Bitcrusher::step() {
 };
 
 struct BitcrusherWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	BitcrusherWidget(Bitcrusher *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };	
 		
 BitcrusherWidget::BitcrusherWidget(Bitcrusher *module) : ModuleWidget(module) {
-	box.size = Vec(4 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Bitcrusher.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Bitcrusher-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Bitcrusher.svg")));
 	
 	addChild(Widget::create<MScrewD>(Vec(0, 0)));
 	addChild(Widget::create<MScrewA>(Vec(0, 365)));
@@ -147,46 +131,5 @@ BitcrusherWidget::BitcrusherWidget(Bitcrusher *module) : ModuleWidget(module) {
 	addOutput(Port::create<SilverSixPortB>(Vec(18, 290), Port::OUTPUT, module, Bitcrusher::OUTPUT));
 
 };
-
-void BitcrusherWidget::step() {
-	Bitcrusher *bitcrusher = dynamic_cast<Bitcrusher*>(module);
-	assert(bitcrusher);
-	panelClassic->visible = (bitcrusher->Theme == 0);
-	panelNightMode->visible = (bitcrusher->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct BitCClassicMenu : MenuItem {
-	Bitcrusher *bitcrusher;
-	void onAction(EventAction &e) override {
-		bitcrusher->Theme = 0;
-	}
-	void step() override {
-		rightText = (bitcrusher->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct BitCNightModeMenu : MenuItem {
-	Bitcrusher *bitcrusher;
-	void onAction(EventAction &e) override {
-		bitcrusher->Theme = 1;
-	}
-	void step() override {
-		rightText = (bitcrusher->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* BitcrusherWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Bitcrusher *bitcrusher = dynamic_cast<Bitcrusher*>(module);
-	assert(bitcrusher);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<BitCClassicMenu>(&BitCClassicMenu::text, "Classic (default)", &BitCClassicMenu::bitcrusher, bitcrusher));
-	menu->addChild(construct<BitCNightModeMenu>(&BitCNightModeMenu::text, "Night Mode", &BitCNightModeMenu::bitcrusher, bitcrusher));
-	return menu;
-}
 
 Model *modelBitcrusher = Model::create<Bitcrusher, BitcrusherWidget>("MSM", "Bitcrusher", "Bitcrusher", EFFECT_TAG);

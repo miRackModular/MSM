@@ -167,42 +167,22 @@ void LFO::step()
 	
 	
 	//MIX LFO 1 & LFO 2
-	float CrossfadeMix = clamp(params[MIX_PARAM].value + inputs[CV_MIX_INPUT].value, 0.0f, 1.0f);
+	float CrossfadeMix = clamp(params[MIX_PARAM].value + inputs[CV_MIX_INPUT].value / 10.f, 0.0f, 1.0f);
 	float MIX_IN_1 = outputs[LFO_A_OUTPUT].value;
 	float MIX_IN_2 = outputs[LFO_B_OUTPUT].value;
 	float OutMix;
 	
-	if(CrossfadeMix < 0.5f) {
-		OutMix = crossfade(MIX_IN_1, MIX_IN_1, CrossfadeMix);
-	}
-	else(CrossfadeMix > 1.0f); 
-		OutMix = crossfade(MIX_IN_1, MIX_IN_2, CrossfadeMix);
+	OutMix = crossfade(MIX_IN_1, MIX_IN_2, CrossfadeMix);
 	outputs[OUT_MIX_OUTPUT].value = OutMix;
 };
 
 
 struct LFOWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	LFOWidget(LFO *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 LFOWidget::LFOWidget(LFO *module) : ModuleWidget(module) {
-	box.size = Vec(16 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/MLFO.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/MLFO-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/MLFO.svg")));
 
 	addChild(Widget::create<MScrewB>(Vec(15, 0)));
 	addChild(Widget::create<MScrewC>(Vec(box.size.x-30, 0)));
@@ -248,46 +228,5 @@ LFOWidget::LFOWidget(LFO *module) : ModuleWidget(module) {
 	addInput(Port::create<SilverSixPort>(Vec(140, 256), Port::INPUT, module, LFO::CV_MIX_INPUT));
 	addOutput(Port::create<SilverSixPortA>(Vec(110, 298), Port::OUTPUT, module, LFO::OUT_MIX_OUTPUT));
 };
-
-void LFOWidget::step() {
-	LFO *lfo = dynamic_cast<LFO*>(module);
-	assert(lfo);
-	panelClassic->visible = (lfo->Theme == 0);
-	panelNightMode->visible = (lfo->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct LClassicMenu : MenuItem {
-	LFO *lfo;
-	void onAction(EventAction &e) override {
-		lfo->Theme = 0;
-	}
-	void step() override {
-		rightText = (lfo->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct LNightModeMenu : MenuItem {
-	LFO *lfo;
-	void onAction(EventAction &e) override {
-		lfo->Theme = 1;
-	}
-	void step() override {
-		rightText = (lfo->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* LFOWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	LFO *lfo = dynamic_cast<LFO*>(module);
-	assert(lfo);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<LClassicMenu>(&LClassicMenu::text, "Classic (default)", &LClassicMenu::lfo, lfo));
-	menu->addChild(construct<LNightModeMenu>(&LNightModeMenu::text, "Night Mode", &LNightModeMenu::lfo, lfo));
-	return menu;
-}
 
 Model *modelLFO = Model::create<LFO, LFOWidget>("MSM", "MLFO", "MLFO", LFO_TAG);

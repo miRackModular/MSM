@@ -124,27 +124,11 @@ void Mult::step() {
 };
 
 struct MultWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	MultWidget(Mult *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 MultWidget::MultWidget(Mult *module) : ModuleWidget(module) {
-	box.size = Vec(9 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Mult.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Mult-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Mult.svg")));
 
     addChild(Widget::create<MScrewA>(Vec(15, 0)));
     addChild(Widget::create<MScrewA>(Vec(box.size.x - 30, 0)));
@@ -183,46 +167,5 @@ MultWidget::MultWidget(Mult *module) : ModuleWidget(module) {
 	addOutput(Port::create<SilverSixPortC>(Vec(95, 280), Port::OUTPUT, module, Mult::OUT_35_OUTPUT));
 	addOutput(Port::create<SilverSixPort>(Vec(95, 320), Port::OUTPUT, module, Mult::OUT_36_OUTPUT));
 };
-
-void MultWidget::step() {
-	Mult *mult = dynamic_cast<Mult*>(module);
-	assert(mult);
-	panelClassic->visible = (mult->Theme == 0);
-	panelNightMode->visible = (mult->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct MultClassicMenu : MenuItem {
-	Mult *mult;
-	void onAction(EventAction &e) override {
-		mult->Theme = 0;
-	}
-	void step() override {
-		rightText = (mult->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct MultNightModeMenu : MenuItem {
-	Mult *mult;
-	void onAction(EventAction &e) override {
-		mult->Theme = 1;
-	}
-	void step() override {
-		rightText = (mult->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* MultWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Mult *mult = dynamic_cast<Mult*>(module);
-	assert(mult);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<MultClassicMenu>(&MultClassicMenu::text, "Classic (default)", &MultClassicMenu::mult, mult));
-	menu->addChild(construct<MultNightModeMenu>(&MultNightModeMenu::text, "Night Mode", &MultNightModeMenu::mult, mult));
-	return menu;
-}
 
 Model *modelMult = Model::create<Mult, MultWidget>("MSM", "Mult", "Mult", MULTIPLE_TAG);

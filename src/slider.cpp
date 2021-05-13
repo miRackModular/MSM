@@ -41,50 +41,29 @@ struct SimpleSlider : Module {
 
 void SimpleSlider::step() {
 	
-	double SLIDER = clamp(params[SLIDER_PARAM].value + inputs[CV_INPUT].value, 0.0f, 1.0f);
+	double SLIDER = clamp(params[SLIDER_PARAM].value + inputs[CV_INPUT].value / 10.f, 0.0f, 1.0f);
 	double IN1 = inputs[IN1_INPUT].value;
 	double IN2 = inputs[IN2_INPUT].value;
 	double TYPE = params[TYPE_PARAM].value;
 	double OUT = outputs[MAIN_OUTPUT].value;
 	
 	if(TYPE == 0.0f) {
-		if(SLIDER > 0.5f) 
-			OUT = crossfade(IN1, IN1, SLIDER);
-		else(SLIDER < 1.0f); 
-			OUT = crossfade(IN1, IN2, SLIDER);
-		outputs[MAIN_OUTPUT].value = OUT;
+		OUT = crossfade(IN1, IN2, SLIDER);
 	}
 	else {
 		OUT = (IN1 + IN2) * SLIDER;
-		outputs[MAIN_OUTPUT].value = OUT;
 	}
+	outputs[MAIN_OUTPUT].value = OUT;
 	
 	
 };
 
 struct SimpleSliderWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	SimpleSliderWidget(SimpleSlider *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;	
 };
 
 SimpleSliderWidget::SimpleSliderWidget(SimpleSlider *module) : ModuleWidget(module) {
-	box.size = Vec(8 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/SimpleSlider.svg")));
-	addChild(panelClassic);
-
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/SimpleSlider-Dark.svg")));
-	addChild(panelNightMode);
-
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/SimpleSlider.svg")));
 
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewB>(Vec(15, 365)));
@@ -102,46 +81,5 @@ SimpleSliderWidget::SimpleSliderWidget(SimpleSlider *module) : ModuleWidget(modu
 	
 	addOutput(Port::create<SilverSixPortD>(Vec(47, 299), Port::OUTPUT, module, SimpleSlider::MAIN_OUTPUT));
 };
-
-void SimpleSliderWidget::step() {
-	SimpleSlider *simpleslider = dynamic_cast<SimpleSlider*>(module);
-	assert(simpleslider);
-	panelClassic->visible = (simpleslider->Theme == 0);
-	panelNightMode->visible = (simpleslider->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct SimpleClassicMenu : MenuItem {
-	SimpleSlider *simpleslider;
-	void onAction(EventAction &e) override {
-		simpleslider->Theme = 0;
-	}
-	void step() override {
-		rightText = (simpleslider->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct SimpleNightModeMenu : MenuItem {
-	SimpleSlider *simpleslider;
-	void onAction(EventAction &e) override {
-		simpleslider->Theme = 1;
-	}
-	void step() override {
-		rightText = (simpleslider->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* SimpleSliderWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	SimpleSlider *simpleslider = dynamic_cast<SimpleSlider*>(module);
-	assert(simpleslider);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<SimpleClassicMenu>(&SimpleClassicMenu::text, "Classic (default)", &SimpleClassicMenu::simpleslider, simpleslider));
-	menu->addChild(construct<SimpleNightModeMenu>(&SimpleNightModeMenu::text, "Night Mode", &SimpleNightModeMenu::simpleslider, simpleslider));
-	return menu;
-}
 
 Model *modelSimpleSlider = Model::create<SimpleSlider, SimpleSliderWidget>("MSM", "Simple Slider", "Simple Slider", MIXER_TAG, AMPLIFIER_TAG);

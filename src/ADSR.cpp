@@ -117,7 +117,7 @@ void ADSR::step() {
 		*/
 		
 		attackshape = clamp(params[ATT_SHAPE].value, 0.1f, 4.0f);
-		decayshape = clamp(params[DEC_SHAPE].value + inputs[DEC_SHAPE_CV].value, 0.1f, 4.0f);
+		decayshape = clamp(params[DEC_SHAPE].value + inputs[DEC_SHAPE_CV].value / 2.5f, 0.1f, 4.0f);
 		releaseshape = clamp(params[REL_SHAPE].value, 0.1f, 4.0f);
 		_envelope.setShapes(attackshape, decayshape, releaseshape);
 	}
@@ -160,28 +160,11 @@ void ADSR::step() {
 
 
 struct ADSRWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	ADSRWidget(ADSR *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 ADSRWidget::ADSRWidget(ADSR *module) : ModuleWidget(module) {
-	box.size = Vec(9 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	// Classic Theme
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/ADSR.svg")));
-	addChild(panelClassic);
-	// Night Mode Theme
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/ADSR-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/ADSR.svg")));
 	
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewD>(Vec(box.size.x-30, 0)));
@@ -218,89 +201,6 @@ ADSRWidget::ADSRWidget(ADSR *module) : ModuleWidget(module) {
 	addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(49, 46), module, ADSR::DECAY_LIGHT));
 	addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(82, 46), module, ADSR::SUSTAIN_LIGHT));
 	addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(112, 46), module, ADSR::RELEASE_LIGHT));
-}
-
-void ADSRWidget::step() {
-	ADSR *adsr = dynamic_cast<ADSR*>(module);
-	assert(adsr);
-	panelClassic->visible = (adsr->Theme == 0);
-	panelNightMode->visible = (adsr->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct ADSRClassicMenu : MenuItem {
-	ADSR *adsr;
-	void onAction(EventAction &e) override {
-		adsr->Theme = 0;
-	}
-	void step() override {
-		rightText = (adsr->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct ADSRNightModeMenu : MenuItem {
-	ADSR *adsr;
-	void onAction(EventAction &e) override {
-		adsr->Theme = 1;
-	}
-	void step() override {
-		rightText = (adsr->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-/*
-struct ExpoMenu : MenuItem {
-	ADSR *adsr;
-	void onAction(EventAction &e) override {
-		adsr->_linearMode = 0;
-	}
-	void step() override {
-		rightText = (adsr->_linearMode == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct LogarithmicMenu : MenuItem {
-	ADSR *adsr;
-	void onAction(EventAction &e) override {
-		adsr->_linearMode = 1;
-	}
-	void step() override {
-		rightText = (adsr->_linearMode == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct LinearMenu : MenuItem {
-	ADSR *adsr;
-	void onAction(EventAction &e) override {
-		adsr->_linearMode = 2;
-	}
-	void step() override {
-		rightText = (adsr->_linearMode == 2) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-*/
-
-
-
-Menu* ADSRWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	ADSR *adsr = dynamic_cast<ADSR*>(module);
-	assert(adsr);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<ADSRClassicMenu>(&ADSRClassicMenu::text, "Classic (default)", &ADSRClassicMenu::adsr, adsr));
-	menu->addChild(construct<ADSRNightModeMenu>(&ADSRNightModeMenu::text, "Night Mode", &ADSRNightModeMenu::adsr, adsr));
-	//menu->addChild(construct<MenuEntry>());
-	//menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Type"));
-	//menu->addChild(construct<ExpoMenu>(&ExpoMenu::text, "Exponential Mode", &ExpoMenu::adsr, adsr));
-	//menu->addChild(construct<LogarithmicMenu>(&LogarithmicMenu::text, "Logarithmic Mode", &LogarithmicMenu::adsr, adsr));
-	//menu->addChild(construct<LinearMenu>(&LinearMenu::text, "Linear Mode", &LinearMenu::adsr, adsr));
-	return menu;
 }
 
 Model *modelADSR = Model::create<ADSR, ADSRWidget>("MSM", "ADSR", "ADSR", ENVELOPE_GENERATOR_TAG);

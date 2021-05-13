@@ -598,54 +598,28 @@ void VCO::step() {
 	
 	float SHAPE_CV = inputs[SHAPE_CV_INPUT].value * params[SHAPE_CV_PARAM].value;
 	
-	float upW = clamp(params[UP_PARAM].value + inputs[UP_INPUT].value, 0.0f, 4.0f);
+	float upW = clamp(params[UP_PARAM].value + inputs[UP_INPUT].value / 2.5f, 0.0f, 4.0f);
 	
-	float downW = clamp(params[DOWN_PARAM].value + inputs[DOWN_INPUT].value, 0.0f, 4.0f);
+	float downW = clamp(params[DOWN_PARAM].value + inputs[DOWN_INPUT].value / 2.5f, 0.0f, 4.0f);
 	
 	folder.Shape(IN_1, SHAPE_MOD, SHAPE_CV, upW, downW, outputs[FOLD_OUTPUT].active);
 	
 	folder.process();
 	
-	float CrossfadeA = clamp(params[INPUT_GAIN_PARAM].value + inputs[SHAPE_1_CV_INPUT].value, 0.0f, 1.0f);
-	float IN_1F = 0.0f;
-	float IN_2F = folder.Output();
-	float OutA;
-
-	if(CrossfadeA < 0.5f) {
-		OutA = crossfade(IN_1F, IN_1F, CrossfadeA);
-	}
-	else(CrossfadeA > 1.0f); 
-		OutA = crossfade(IN_1F, IN_2F, CrossfadeA);
-		
-	outputs[FOLD_OUTPUT].value = saturate(OutA / 1.5f);
+	float FoldAmp = clamp(params[INPUT_GAIN_PARAM].getValue() + inputs[SHAPE_1_CV_INPUT].value / 2.5f, 0.0f, 1.0f);
+	float FoldOut = folder.Output() * FoldAmp;
+	outputs[FOLD_OUTPUT].value = saturate(FoldOut / 1.5f);
 	
 };
 
 
 struct VCOWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-
 	VCOWidget(VCO *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 
 VCOWidget::VCOWidget(VCO *module) : ModuleWidget(module) {
-	box.size = Vec(27 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	// Classic Theme
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/VCO.svg")));
-	addChild(panelClassic);
-	// Night Mode Theme
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/VCO-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/VCO.svg")));
 	
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewC>(Vec(box.size.x-30, 0)));
@@ -706,49 +680,6 @@ VCOWidget::VCOWidget(VCO *module) : ModuleWidget(module) {
 	
 };
 
-void VCOWidget::step() {
-	VCO *vco = dynamic_cast<VCO*>(module);
-	assert(vco);
-	
-	panelClassic->visible = (vco->Theme == 0);
-	panelNightMode->visible = (vco->Theme == 1);
-	
-	ModuleWidget::step();
-}
-
-struct VCOClassicMenu : MenuItem {
-	VCO *vco;
-	void onAction(EventAction &e) override {
-		vco->Theme = 0;
-	}
-	void step() override {
-		rightText = (vco->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct VCONightModeMenu : MenuItem {
-	VCO *vco;
-	void onAction(EventAction &e) override {
-		vco->Theme = 1;
-	}
-	void step() override {
-		rightText = (vco->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* VCOWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	VCO *vco = dynamic_cast<VCO*>(module);
-	assert(vco);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<VCOClassicMenu>(&VCOClassicMenu::text, "Classic (default)", &VCOClassicMenu::vco, vco));
-	menu->addChild(construct<VCONightModeMenu>(&VCONightModeMenu::text, "Night Mode", &VCONightModeMenu::vco, vco));
-	return menu;
-}
-
 
 Model *modelVCO = Model::create<VCO, VCOWidget>("MSM", "OSCiX", "OSCiX", OSCILLATOR_TAG);
 
@@ -788,25 +719,10 @@ struct BVCO : Module {
 	
 	Boscillator<2, 4> oscillator;
 	
-	// Panel Theme
-	int Theme = 0;
-	
 	bool LFOMOD = 1;
 		
 	BVCO() : Module(NUM_PARAMS, NUM_INPUTS, NUM_OUTPUTS) {}
 	void step() override;
-	
-	//Json for Panel Theme
-	json_t *toJson() override	{
-		json_t *rootJ = json_object();
-		json_object_set_new(rootJ, "Theme", json_integer(Theme));
-		return rootJ;
-	}
-	void fromJson(json_t *rootJ) override	{
-		json_t *ThemeJ = json_object_get(rootJ, "Theme");
-		if (ThemeJ)
-			Theme = json_integer_value(ThemeJ);
-	}		
 	
 };
 
@@ -864,28 +780,11 @@ void BVCO::step() {
 };
 
 struct BVCOWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *pClassic;
-	SVGPanel *pNightMode;
-	
 	BVCOWidget(BVCO *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };
 
 BVCOWidget::BVCOWidget(BVCO *module) : ModuleWidget(module) {
-	box.size = Vec(9 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	
-	pClassic = new SVGPanel();
-	pClassic->box.size = box.size;
-	pClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/BVCO.svg")));
-	addChild(pClassic);
-	
-	pNightMode = new SVGPanel();
-	pNightMode->box.size = box.size;
-	pNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/BVCO-Dark.svg")));
-	addChild(pNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/BVCO.svg")));
 	
 	addChild(Widget::create<MScrewA>(Vec(15, 0)));
 	addChild(Widget::create<MScrewC>(Vec(box.size.x-30, 0)));
@@ -917,47 +816,5 @@ BVCOWidget::BVCOWidget(BVCO *module) : ModuleWidget(module) {
 	addOutput(Port::create<SilverSixPortD>(Vec(95, 327.5), Port::OUTPUT, module, BVCO::FULL_OUTPUT));	
 	
 };
-
-void BVCOWidget::step() {
-	BVCO *bvco = dynamic_cast<BVCO*>(module);
-	assert(bvco);
-	pClassic->visible = (bvco->Theme == 0);
-	pNightMode->visible = (bvco->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct BVCOClassicMenu : MenuItem {
-	BVCO *bvco;
-	void onAction(EventAction &e) override {
-		bvco->Theme = 0;
-	}
-	void step() override {
-		rightText = (bvco->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct BVCONightModeMenu : MenuItem {
-	BVCO *bvco;
-	void onAction(EventAction &e) override {
-		bvco->Theme = 1;
-	}
-	void step() override {
-		rightText = (bvco->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* BVCOWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	BVCO *bvco = dynamic_cast<BVCO*>(module);
-	assert(bvco);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<BVCOClassicMenu>(&BVCOClassicMenu::text, "Classic (default)", &BVCOClassicMenu::bvco, bvco));
-	menu->addChild(construct<BVCONightModeMenu>(&BVCONightModeMenu::text, "Night Mode", &BVCONightModeMenu::bvco, bvco));
-	return menu;
-}
-
 
 Model *modelBVCO = Model::create<BVCO, BVCOWidget>("MSM", "Rogue", "Rogue", OSCILLATOR_TAG);

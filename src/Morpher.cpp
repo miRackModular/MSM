@@ -264,27 +264,11 @@ void Morpher::step() {
 };
 
 struct MorpherWidget : ModuleWidget {
-	// Panel Themes
-	SVGPanel *panelClassic;
-	SVGPanel *panelNightMode;
-	
 	MorpherWidget(Morpher *module);
-	void step() override;
-	
-	Menu* createContextMenu() override;
 };	
 
 MorpherWidget::MorpherWidget(Morpher *module) : ModuleWidget(module) {
-	box.size = Vec(6 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT);
-	panelClassic = new SVGPanel();
-	panelClassic->box.size = box.size;
-	panelClassic->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Morpher.svg")));
-	addChild(panelClassic);
-	
-	panelNightMode = new SVGPanel();
-	panelNightMode->box.size = box.size;
-	panelNightMode->setBackground(SVG::load(assetPlugin(plugin, "res/Panels/Morpher-Dark.svg")));
-	addChild(panelNightMode);
+	setPanel(SVG::load(assetPlugin(plugin, "res/Panels/Morpher.svg")));
 	
     addChild(Widget::create<MScrewB>(Vec(0, 0)));
     addChild(Widget::create<MScrewA>(Vec(box.size.x - 15, 0)));
@@ -317,46 +301,5 @@ MorpherWidget::MorpherWidget(Morpher *module) : ModuleWidget(module) {
 	addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(24, 270), module, Morpher::LIGHT_7));
 	addChild(ModuleLightWidget::create<SmallLight<BlueLight>>(Vec(62, 270), module, Morpher::LIGHT_8));
 };
-
-void MorpherWidget::step() {
-	Morpher *morpher = dynamic_cast<Morpher*>(module);
-	assert(morpher);
-	panelClassic->visible = (morpher->Theme == 0);
-	panelNightMode->visible = (morpher->Theme == 1);
-	ModuleWidget::step();
-}
-
-struct morphClassicMenu : MenuItem {
-	Morpher *morpher;
-	void onAction(EventAction &e) override {
-		morpher->Theme = 0;
-	}
-	void step() override {
-		rightText = (morpher->Theme == 0) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-struct morphNightModeMenu : MenuItem {
-	Morpher *morpher;
-	void onAction(EventAction &e) override {
-		morpher->Theme = 1;
-	}
-	void step() override {
-		rightText = (morpher->Theme == 1) ? "✔" : "";
-		MenuItem::step();
-	}
-};
-
-Menu* MorpherWidget::createContextMenu() {
-	Menu* menu = ModuleWidget::createContextMenu();
-	Morpher *morpher = dynamic_cast<Morpher*>(module);
-	assert(morpher);
-	menu->addChild(construct<MenuEntry>());
-	menu->addChild(construct<MenuLabel>(&MenuLabel::text, "Theme"));
-	menu->addChild(construct<morphClassicMenu>(&morphClassicMenu::text, "Classic (default)", &morphClassicMenu::morpher, morpher));
-	menu->addChild(construct<morphNightModeMenu>(&morphNightModeMenu::text, "Night Mode", &morphNightModeMenu::morpher, morpher));
-	return menu;
-}
 
 Model *modelMorpher = Model::create<Morpher, MorpherWidget>("MSM", "Morph", "Morph", EFFECT_TAG);
